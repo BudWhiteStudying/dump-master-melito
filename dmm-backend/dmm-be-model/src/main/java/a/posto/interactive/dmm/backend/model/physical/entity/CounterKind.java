@@ -1,7 +1,9 @@
 package a.posto.interactive.dmm.backend.model.physical.entity;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
-import jakarta.persistence.*;
+import jakarta.persistence.Entity;
+import jakarta.persistence.FetchType;
+import jakarta.persistence.OneToMany;
 import lombok.*;
 import org.springframework.data.rest.core.annotation.RestResource;
 
@@ -14,14 +16,10 @@ import java.util.Set;
 @Setter
 @EqualsAndHashCode(callSuper = true)
 @JsonInclude(value = JsonInclude.Include.NON_NULL)
-public class GameState extends BaseCreationModificationTimeEntity {
+public class CounterKind extends BaseEntity {
     private String label;
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "game_id")
-    private Game game;
-
-    @OneToMany(mappedBy = "gameState", fetch = FetchType.LAZY)
+    @OneToMany(mappedBy = "counterKind", fetch = FetchType.LAZY)
     @RestResource(path = "counters", rel = "counters")
     private Set<Counter> counters;
 }
