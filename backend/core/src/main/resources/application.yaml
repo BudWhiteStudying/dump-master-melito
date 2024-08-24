@@ -1,0 +1,10 @@
+application:
+  label: Dump-Master Melito
+
+server:
+  servlet:
+    context-path: /dump-master-melito
+
+spring:
+  profiles:
+    active: development
