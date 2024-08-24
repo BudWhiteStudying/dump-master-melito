@@ -9,13 +9,13 @@
         <version>1.0-SNAPSHOT</version>
     </parent>
 
-    <artifactId>backend</artifactId>
+    <artifactId>dmm-backend</artifactId>
     <packaging>pom</packaging>
     <modules>
-        <module>framework</module>
-        <module>model</module>
-        <module>mapper</module>
-        <module>core</module>
+        <module>dmm-be-framework</module>
+        <module>dmm-be-model</module>
+        <module>dmm-be-mapper</module>
+        <module>dmm-be-core</module>
     </modules>
 
     <properties>
