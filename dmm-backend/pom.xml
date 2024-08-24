@@ -16,6 +16,7 @@
         <module>dmm-be-model</module>
         <module>dmm-be-mapper</module>
         <module>dmm-be-core</module>
+        <module>dmm-specific-data</module>
     </modules>
 
     <properties>
