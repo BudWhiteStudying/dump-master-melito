@@ -31,10 +31,10 @@ public class Line extends BaseEntity {
     @OneToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "character_id", foreignKey = @ForeignKey(name = "FK_LINE__CHARACTER"))
     @RestResource(path = "character", rel = "character")
-    private Character character;
+    private GameCharacter character;
 
-    @OneToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "node_id", foreignKey = @ForeignKey(name = "FK_LINE__NODE"))
-    @RestResource(path = "node", rel = "node")
-    private Node node;
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "dialog_id", foreignKey = @ForeignKey(name = "FK_LINE__NODE"))
+    @RestResource(path = "dialog", rel = "dialog")
+    private Node dialog;
 }

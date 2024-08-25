@@ -22,5 +22,5 @@ public class CharacterImage extends BaseFileEntity {
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "character_id", foreignKey = @ForeignKey(name = "FK_CHARACTER_IMG__CHARACTER"))
     @RestResource(path = "character", rel = "character")
-    private Character character;
+    private GameCharacter character;
 }

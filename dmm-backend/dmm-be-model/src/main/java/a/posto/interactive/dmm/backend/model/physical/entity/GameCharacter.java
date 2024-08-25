@@ -17,7 +17,7 @@ import java.util.Set;
 @Setter
 @EqualsAndHashCode(callSuper = true)
 @JsonInclude(value = JsonInclude.Include.NON_NULL)
-public class Character extends BaseEntity {
+public class GameCharacter extends BaseEntity {
     @NonNull
     private String name;
     @NonNull

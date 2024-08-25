@@ -17,8 +17,12 @@ spring:
       path: /h2
   jpa:
     database-platform: org.hibernate.dialect.H2Dialect
+    defer-datasource-initialization: true
     hibernate:
       naming:
         physical-strategy: a.posto.interactive.dmm.backend.core.config.SnakeCasePhysicalNamingStrategy
   profiles:
     active: development
+  sql:
+    init:
+      data-locations: classpath:data/init-data.sql

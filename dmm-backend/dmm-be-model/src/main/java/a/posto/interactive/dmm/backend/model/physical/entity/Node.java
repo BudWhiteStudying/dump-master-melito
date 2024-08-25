@@ -36,6 +36,10 @@ public class Node extends BaseEntity {
     @RestResource(path = "outcomes", rel = "outcomes")
     private Set<Outcome> outcomes;
 
+    @OneToMany(mappedBy = "dialog", fetch = FetchType.LAZY)
+    @RestResource(path = "lines", rel = "lines")
+    private Set<Line> lines;
+
     //Node hierarchy relationships
 
     @ManyToOne(fetch = FetchType.LAZY)
