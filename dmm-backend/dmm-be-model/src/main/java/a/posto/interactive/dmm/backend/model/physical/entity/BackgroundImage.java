@@ -6,7 +6,6 @@ import jakarta.persistence.FetchType;
 import jakarta.persistence.OneToMany;
 import lombok.*;
 import org.springframework.data.rest.core.annotation.RestResource;
-import org.springframework.lang.NonNull;
 
 import java.util.Set;
 
@@ -17,11 +16,9 @@ import java.util.Set;
 @Setter
 @EqualsAndHashCode(callSuper = true)
 @JsonInclude(value = JsonInclude.Include.NON_NULL)
-public class CounterKind extends BaseEntity {
-    @NonNull
-    private String label;
+public class BackgroundImage extends BaseFileEntity {
 
-    @OneToMany(mappedBy = "counterKind", fetch = FetchType.LAZY)
-    @RestResource(path = "counters", rel = "counters")
-    private Set<Counter> counters;
+    @OneToMany(mappedBy = "backgroundImage", fetch = FetchType.LAZY)
+    @RestResource(path = "nodes", rel = "nodes")
+    private Set<Node> nodes;
 }

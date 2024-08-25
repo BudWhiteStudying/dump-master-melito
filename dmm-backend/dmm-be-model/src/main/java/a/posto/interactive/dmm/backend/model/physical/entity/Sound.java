@@ -1,5 +1,6 @@
 package a.posto.interactive.dmm.backend.model.physical.entity;
 
+import a.posto.interactive.dmm.backend.model.enumeration.SoundType;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import jakarta.persistence.*;
 import lombok.*;
@@ -15,16 +16,12 @@ import java.util.Set;
 @Setter
 @EqualsAndHashCode(callSuper = true)
 @JsonInclude(value = JsonInclude.Include.NON_NULL)
-public class GameState extends BaseCreationModificationTimeEntity {
+public class Sound extends BaseFileEntity {
     @NonNull
-    private String label;
+    @Enumerated(value = EnumType.STRING)
+    private SoundType kind;
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "game_id", foreignKey = @ForeignKey(name = "FK_GAME_STATE__GAME"))
-    @RestResource(path = "game", rel = "game")
-    private Game game;
-
-    @OneToMany(mappedBy = "gameState", fetch = FetchType.LAZY)
-    @RestResource(path = "counters", rel = "counters")
-    private Set<Counter> counters;
+    @OneToMany(mappedBy = "soundtrack", fetch = FetchType.LAZY)
+    @RestResource(path = "nodes", rel = "nodes")
+    private Set<Node> nodes;
 }

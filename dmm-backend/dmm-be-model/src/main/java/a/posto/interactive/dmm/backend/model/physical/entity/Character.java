@@ -17,11 +17,13 @@ import java.util.Set;
 @Setter
 @EqualsAndHashCode(callSuper = true)
 @JsonInclude(value = JsonInclude.Include.NON_NULL)
-public class CounterKind extends BaseEntity {
+public class Character extends BaseEntity {
     @NonNull
-    private String label;
+    private String name;
+    @NonNull
+    private String color;
 
-    @OneToMany(mappedBy = "counterKind", fetch = FetchType.LAZY)
-    @RestResource(path = "counters", rel = "counters")
-    private Set<Counter> counters;
+    @OneToMany(mappedBy = "character", fetch = FetchType.LAZY)
+    @RestResource(path = "images", rel = "images")
+    private Set<CharacterImage> images;
 }
