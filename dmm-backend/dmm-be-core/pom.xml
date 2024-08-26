@@ -78,7 +78,7 @@
                             <outputDirectory>src/main/resources/META-INF/resources</outputDirectory>
                             <resources>
                                 <resource>
-                                    <directory>../../dmm-frontend/src/main/angular/dist/dmm-frontend</directory>
+                                    <directory>../../dmm-frontend/src/main/angular/dist/dmm-frontend/browser</directory>
                                 </resource>
                             </resources>
                         </configuration>
