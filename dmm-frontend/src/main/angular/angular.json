@@ -65,10 +65,10 @@
           "builder": "@angular-devkit/build-angular:dev-server",
           "configurations": {
             "production": {
-              "browserTarget": "dmm-frontend:build:production"
+              "buildTarget": "dmm-frontend:build:production"
             },
             "development": {
-              "browserTarget": "dmm-frontend:build:development"
+              "buildTarget": "dmm-frontend:build:development"
             }
           },
           "defaultConfiguration": "development"
@@ -76,7 +76,7 @@
         "extract-i18n": {
           "builder": "@angular-devkit/build-angular:extract-i18n",
           "options": {
-            "browserTarget": "dmm-frontend:build"
+            "buildTarget": "dmm-frontend:build"
           }
         },
         "test": {
