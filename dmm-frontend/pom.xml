@@ -10,6 +10,7 @@
     </parent>
 
     <artifactId>dmm-frontend</artifactId>
+    <packaging>pom</packaging>
 
     <build>
         <plugins>

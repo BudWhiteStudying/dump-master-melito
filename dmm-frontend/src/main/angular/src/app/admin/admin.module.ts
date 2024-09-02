@@ -1,19 +1,19 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { NodeDetailsComponent } from './node-details/node-details.component';
-import { NodesTreeComponent } from './nodes-tree/nodes-tree.component';
-import { AdminComponent } from './admin/admin.component';
+import { NodeTreeComponent } from './node-tree/node-tree.component';
+import { MaterialModule } from '../material/material.module';
 
 
 
 @NgModule({
   declarations: [
     NodeDetailsComponent,
-    NodesTreeComponent,
-    AdminComponent
+    NodeTreeComponent
   ],
   imports: [
-    CommonModule
+    CommonModule,
+    MaterialModule
   ]
 })
 export class AdminModule { }

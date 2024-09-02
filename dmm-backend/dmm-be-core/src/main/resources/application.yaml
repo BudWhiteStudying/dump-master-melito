@@ -22,7 +22,7 @@ spring:
       naming:
         physical-strategy: a.posto.interactive.dmm.backend.core.config.SnakeCasePhysicalNamingStrategy
   profiles:
-    active: development
+    active: production
   sql:
     init:
       data-locations: classpath:data/init-data.sql

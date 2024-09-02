@@ -1,18 +1,18 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { GameViewComponent } from './game-view.component';
+import { NodeTreeComponent } from './node-tree.component';
 
-describe('GameViewComponent', () => {
-  let component: GameViewComponent;
-  let fixture: ComponentFixture<GameViewComponent>;
+describe('NodeTreeComponent', () => {
+  let component: NodeTreeComponent;
+  let fixture: ComponentFixture<NodeTreeComponent>;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [GameViewComponent]
+      declarations: [NodeTreeComponent]
     })
     .compileComponents();
 
-    fixture = TestBed.createComponent(GameViewComponent);
+    fixture = TestBed.createComponent(NodeTreeComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });
