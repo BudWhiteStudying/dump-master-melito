@@ -4,7 +4,7 @@
     flex-direction: column;
     width: 100vw;
     height: 100vh;
-    background: url('../../../assets/temp/img/dump-master-melito-title-screen.jpeg');
+    background: url('http://localhost:8080/dump-master-melito/img/title-screen.jpeg');
     align-content: center;
 }
 
@@ -27,8 +27,7 @@
 .landing-options {
     /*border: 1px solid blue;*/
     border-top: 1px solid black;
-    margin: 2px;
-    background-color: rgba(200,200,200,0.7);
+    background-color: rgba(200,200,200,0.8);
     display: flex;
     flex-direction: column;
     flex: 1;
