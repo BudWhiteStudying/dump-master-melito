@@ -1,3 +1,6 @@
+@import url('https://fonts.googleapis.com/icon?family=Material+Icons');
+@import url('https://fonts.googleapis.com/css2?family=Orbitron:wght@400..900&display=swap');
+
 .landing-container {
     /*border: 1px solid green;*/
     display: flex;
@@ -5,6 +8,7 @@
     width: 100vw;
     height: 100vh;
     background: url('http://localhost:8080/dump-master-melito/img/title-screen.jpeg');
+    background-size: cover;
     align-content: center;
 }
 
@@ -19,6 +23,7 @@
     -webkit-text-stroke: 4px black;
     color: pink;
     font-family: "Orbitron", sans-serif;
+    -fx-font-family: "Orbitron";
     font-size: 7vw;
     font-weight: bolder;
     text-align: center;
