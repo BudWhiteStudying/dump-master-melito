@@ -23,5 +23,6 @@ public class Sound extends BaseFileEntity {
 
     @OneToMany(mappedBy = "soundtrack", fetch = FetchType.LAZY)
     @RestResource(path = "nodes", rel = "nodes")
+    @EqualsAndHashCode.Exclude
     private Set<Node> nodes;
 }

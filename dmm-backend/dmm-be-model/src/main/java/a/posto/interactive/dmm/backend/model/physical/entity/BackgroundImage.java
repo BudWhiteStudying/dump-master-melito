@@ -20,5 +20,6 @@ public class BackgroundImage extends BaseFileEntity {
 
     @OneToMany(mappedBy = "backgroundImage", fetch = FetchType.LAZY)
     @RestResource(path = "nodes", rel = "nodes")
+    @EqualsAndHashCode.Exclude
     private Set<Node> nodes;
 }
