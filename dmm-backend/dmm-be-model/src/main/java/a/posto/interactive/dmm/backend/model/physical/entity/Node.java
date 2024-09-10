@@ -47,7 +47,7 @@ public class Node extends BaseEntity {
     @RestResource(path = "parent", rel = "parent")
     private Node parent;
 
-    @OneToMany(mappedBy = "parent", fetch = FetchType.EAGER)
+    @OneToMany(mappedBy = "parent", fetch = FetchType.LAZY)
     @RestResource(path = "children", rel = "children")
     @EqualsAndHashCode.Exclude
     private Set<Node> children;
