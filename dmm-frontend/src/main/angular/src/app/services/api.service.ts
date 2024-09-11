@@ -23,24 +23,17 @@ export class ApiService {
   }
   
   async getItemResource<U extends BaseLinkedObject>(resourceURL: string, resourceName: string, shouldFollowLinks: boolean): Promise<U | U[] | null> {
-    let response
-    try {
-      response= await firstValueFrom(
-        this.http.get<any>(resourceURL)
-        .pipe(
-          catchError(
-            (error) => {
-              console.warn(`Issues when fetching from  ${resourceURL}: ${JSON.stringify(error)}`);
-              return of(null);
-            }
-          )
+    const response = await firstValueFrom(
+      this.http.get<any>(resourceURL)
+      .pipe(
+        catchError(
+          (error) => {
+            console.warn(`Issues when fetching from  ${resourceURL}: ${JSON.stringify(error)}`);
+            return of(null);
+          }
         )
-      );
-    }
-    catch(error) {
-      console.warn(`Issues when fetching from  ${resourceURL}: ${JSON.stringify(error)}`);
-      return Promise.resolve(null);
-    }
+      )
+    );
     if(!response) {
       return Promise.resolve(null);
     }
@@ -52,7 +45,7 @@ export class ApiService {
         return this.getCollectionValueOrEmptyArray(response, resourceName);
       }
       else {
-        for (const item of this.getCollectionValueOrEmptyArray(response, resourceName) as U[]) {
+        for (let item of this.getCollectionValueOrEmptyArray(response, resourceName) as U[]) {
           for (const [resource,link] of Object.entries(item['_links'])) {
             console.log(`key: ${resource}, value: ${link.href}`)
             if(!['self', 'parent', 'children'].includes(resource) && !resourceName.startsWith(resource)) {
@@ -70,13 +63,16 @@ export class ApiService {
               );
             }
           }
+          delete (item as Partial<U>)._links
         }
-        return response;
+        delete response._links
+        return this.getCollectionValueOrEmptyArray(response, resourceName);
       }
     }
     else {
       console.debug('Resource is not a collection');
       if(!shouldFollowLinks) {
+        delete response._links
         return response;
       }
       else {
@@ -97,6 +93,7 @@ export class ApiService {
             );
           }
         }
+        delete response._links
         return response;
       }
     }
@@ -107,7 +104,7 @@ export class ApiService {
       return response._embedded[desiredResource];
     }
     else {
-      //console.warn(`Could not find resource${desiredResource} in response ${JSON.stringify(response)}`);
+      console.warn(`Could not find resource ${desiredResource} in response ${JSON.stringify(response)}`);
       return [];
     }
   }
