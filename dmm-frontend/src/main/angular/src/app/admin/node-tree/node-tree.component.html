@@ -1,1 +1,12 @@
-<p>{{nodeTree}}</p>
+<mat-toolbar>
+    <span>Dump-Master Melito - Admin console</span>
+  </mat-toolbar>
+<mat-card appearance="outlined" *ngFor="let node of nodes" (click)="loadNodes(node['id'])">
+    <mat-card-content>
+        <!-- TODO: build a component for the node card -->
+        <b>Nodo {{node.id}}</b><br>
+        descrizione : {{node.description}}<br>
+        tipo : {{node.kind}}<br>
+        testo : {{node.text}}<br>
+    </mat-card-content>
+</mat-card>

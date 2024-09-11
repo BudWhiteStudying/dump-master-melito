@@ -16,10 +16,7 @@ export class ApiService {
   // returns the _embedded property of a HAL response for a resource
   async getCollectionResource<U extends BaseLinkedObject>(resourceURL: string, resourceName: string): Promise<U[]> {
     const response = await firstValueFrom(this.http.get<any>(resourceURL));
-    if(response['_embedded'] && response['_embedded'][resourceName]) {
-      return response['_embedded'][resourceName];
-    }
-    else throw new Error();
+    return this.getCollectionValueOrEmptyArray(response, resourceName)
   }
   
   async getItemResource<U extends BaseLinkedObject>(resourceURL: string, resourceName: string, shouldFollowLinks: boolean): Promise<U | U[] | null> {

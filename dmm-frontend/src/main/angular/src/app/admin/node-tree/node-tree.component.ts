@@ -9,19 +9,37 @@ import { Node } from '../../model/Node';
 })
 export class NodeTreeComponent {
 
-  nodeTree : string = '';
+  nodes : Node[] = [];
 
   constructor(private apiService: ApiService){}
   ngOnInit(): void {
-    this.apiService.getItemResource<Node>('http://localhost:8080/dump-master-melito/nodes/2', 'nodes', true).then(
-      (response) => {
-        console.log(JSON.stringify(response, null, 4));
-        this.nodeTree = JSON.stringify(response, null, 4);
-      }
-    ).catch(
-      (error)=> {
-        console.warn(`Could not display nodes: ${JSON.stringify(error)}`);
-      }
-    );
+    this.loadNodes();
+  }
+
+  loadNodes(nodeId? : number){
+    if(nodeId || nodeId===0) {
+      this.apiService.getCollectionResource<Node>(`http://localhost:8080/dump-master-melito/nodes/search/findByParentId?parentId=${nodeId}`, 'nodes').then(
+        (response) => {
+          console.log(JSON.stringify(response, null, 4));
+          this.nodes = response;
+        }
+      ).catch(
+        (error)=> {
+          console.warn(`Could not display nodes: ${JSON.stringify(error)}`);
+        }
+      );
+    }
+    else {
+      this.apiService.getCollectionResource<Node>('http://localhost:8080/dump-master-melito/nodes/search/findByParentIsNull', 'nodes').then(
+        (response) => {
+          console.log(JSON.stringify(response, null, 4));
+          this.nodes = response;
+        }
+      ).catch(
+        (error)=> {
+          console.warn(`Could not display nodes: ${JSON.stringify(error)}`);
+        }
+      );
+    }
   }
 }

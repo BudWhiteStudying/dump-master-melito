@@ -7,8 +7,9 @@ import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
 import {MatIconModule} from '@angular/material/icon';
 import {MatDividerModule} from '@angular/material/divider';
 import {MatButtonModule} from '@angular/material/button';
-
-
+import {MatTreeModule} from '@angular/material/tree';
+import {MatCardModule} from '@angular/material/card';
+import {MatToolbarModule} from '@angular/material/toolbar';
 
 @NgModule({
   declarations: [],
@@ -17,13 +18,19 @@ import {MatButtonModule} from '@angular/material/button';
     BrowserAnimationsModule,
     MatIconModule,
     MatDividerModule,
-    MatButtonModule
+    MatButtonModule,
+    MatTreeModule,
+    MatCardModule,
+    MatToolbarModule
   ],
   exports : [
     BrowserAnimationsModule,
     MatIconModule,
     MatDividerModule,
-    MatButtonModule
+    MatButtonModule,
+    MatTreeModule,
+    MatCardModule,
+    MatToolbarModule
   ]
 })
 export class MaterialModule { }
