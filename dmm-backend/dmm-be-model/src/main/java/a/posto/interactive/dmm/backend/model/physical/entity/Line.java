@@ -2,6 +2,7 @@ package a.posto.interactive.dmm.backend.model.physical.entity;
 
 
 import a.posto.interactive.dmm.backend.model.enumeration.CharacterMood;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import jakarta.persistence.*;
 import lombok.*;
@@ -35,6 +36,8 @@ public class Line extends BaseEntity {
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "dialog_id", foreignKey = @ForeignKey(name = "FK_LINE__NODE"))
-    @RestResource(path = "dialog", rel = "dialog")
+    @EqualsAndHashCode.Exclude
+    @JsonIgnore
+    @RestResource(exported = false)
     private Node dialog;
 }

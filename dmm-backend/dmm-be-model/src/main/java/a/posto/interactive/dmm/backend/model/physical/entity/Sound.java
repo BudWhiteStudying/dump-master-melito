@@ -1,6 +1,7 @@
 package a.posto.interactive.dmm.backend.model.physical.entity;
 
 import a.posto.interactive.dmm.backend.model.enumeration.SoundType;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import jakarta.persistence.*;
 import lombok.*;
@@ -22,7 +23,8 @@ public class Sound extends BaseFileEntity {
     private SoundType kind;
 
     @OneToMany(mappedBy = "soundtrack", fetch = FetchType.LAZY)
-    @RestResource(path = "nodes", rel = "nodes")
     @EqualsAndHashCode.Exclude
+    @JsonIgnore
+    @RestResource(exported = false)
     private Set<Node> nodes;
 }

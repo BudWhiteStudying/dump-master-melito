@@ -1,5 +1,6 @@
 package a.posto.interactive.dmm.backend.model.physical.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import jakarta.persistence.Entity;
 import jakarta.persistence.FetchType;
@@ -19,7 +20,8 @@ import java.util.Set;
 public class BackgroundImage extends BaseFileEntity {
 
     @OneToMany(mappedBy = "backgroundImage", fetch = FetchType.LAZY)
-    @RestResource(path = "nodes", rel = "nodes")
     @EqualsAndHashCode.Exclude
+    @JsonIgnore
+    @RestResource(exported = false)
     private Set<Node> nodes;
 }

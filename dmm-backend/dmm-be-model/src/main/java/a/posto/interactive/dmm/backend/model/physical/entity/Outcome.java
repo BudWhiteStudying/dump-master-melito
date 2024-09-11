@@ -4,7 +4,6 @@ package a.posto.interactive.dmm.backend.model.physical.entity;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import jakarta.persistence.*;
 import lombok.*;
-import org.springframework.data.rest.core.annotation.RestResource;
 import org.springframework.lang.NonNull;
 
 @Entity
@@ -22,6 +21,6 @@ public class Outcome extends BaseEntity {
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "choice_id", foreignKey = @ForeignKey(name = "FK_OUTCOME__NODE"))
-    @RestResource(path = "node", rel = "node")
+    @EqualsAndHashCode.Exclude
     private Node node;
 }
