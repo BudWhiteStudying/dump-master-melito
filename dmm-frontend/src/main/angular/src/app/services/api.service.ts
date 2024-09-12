@@ -1,17 +1,19 @@
 import { HttpClient } from '@angular/common/http';
-import { Injectable } from '@angular/core';
+import { Inject, Injectable } from '@angular/core';
 import { catchError, firstValueFrom, Observable, of } from 'rxjs';
 import { BaseLinkedObject } from '../model/BaseLinkedObject';
-import { lazyField } from '../utility/types-utility';
+import { DOCUMENT } from '@angular/common';
 import { Link } from '../model/Link';
 
 @Injectable({
   providedIn: 'root'
 })
 export class ApiService {
-  private apiUrl = 'http://localhost:8080/dump-master-melito';
+  private apiUrl = 'http://localhost:8080';
 
-  constructor(private http: HttpClient) {}
+  constructor(private http: HttpClient, @Inject(DOCUMENT) private document: Document) {
+    this.apiUrl += this.document.querySelector('base')?.getAttribute('href') || '/';
+  }
   
   // returns the _embedded property of a HAL response for a resource
   async getCollectionResource<U extends BaseLinkedObject>(resourceURL: string, resourceName: string): Promise<U[]> {

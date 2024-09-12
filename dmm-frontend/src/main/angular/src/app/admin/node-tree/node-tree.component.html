@@ -1,12 +1,28 @@
 <mat-toolbar>
     <span>Dump-Master Melito - Admin console</span>
-  </mat-toolbar>
-<mat-card appearance="outlined" *ngFor="let node of nodes" (click)="loadNodes(node['id'])">
-    <mat-card-content>
-        <!-- TODO: build a component for the node card -->
-        <b>Nodo {{node.id}}</b><br>
-        descrizione : {{node.description}}<br>
-        tipo : {{node.kind}}<br>
-        testo : {{node.text}}<br>
-    </mat-card-content>
-</mat-card>
+</mat-toolbar>
+<section id='node-tree-content' class='main-content'>
+    <mat-card appearance="outlined" *ngFor="let node of nodes" style="margin: 1vw;display: flex; flex-direction: row;">
+        <div id='node-card-content' class='node-card-content'>
+            <mat-card-content>
+                <!-- TODO: build a component for the node card -->
+                <label class='node-card-title'>Nodo {{node.id}}</label>
+                <mat-form-field id='node-description-textarea' class="node-property-textarea">
+                    <mat-label>Descrizione</mat-label>
+                    <textarea matInput placeholder="">{{node.description}}</textarea>
+                </mat-form-field>
+                <mat-form-field id='node-kind-textarea' class="node-property-textarea">
+                    <mat-label>Tipo</mat-label>
+                    <textarea matInput placeholder="">{{node.kind}}</textarea>
+                </mat-form-field>
+                <mat-form-field id='node-text-textarea' class="node-property-textarea">
+                    <mat-label>Testo</mat-label>
+                    <textarea matInput placeholder="">{{node.text}}</textarea>
+                </mat-form-field>
+            </mat-card-content>
+        </div>
+        <div id='node-card-button' style='flex-grow: 1; align-items: center; justify-content: center; display: flex;' (click)="loadNodes(node['id'])">
+            <mat-icon aria-hidden="false" aria-label="Navigation icon" fontIcon="arrow_forward_ios" style="display: flex; zoom: 2;"></mat-icon>
+        </div>
+    </mat-card>
+</section>

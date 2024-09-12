@@ -10,6 +10,9 @@ import {MatButtonModule} from '@angular/material/button';
 import {MatTreeModule} from '@angular/material/tree';
 import {MatCardModule} from '@angular/material/card';
 import {MatToolbarModule} from '@angular/material/toolbar';
+import {MatInputModule} from '@angular/material/input';
+import {MatFormFieldModule} from '@angular/material/form-field';
+import {FormsModule} from '@angular/forms';
 
 @NgModule({
   declarations: [],
@@ -21,7 +24,10 @@ import {MatToolbarModule} from '@angular/material/toolbar';
     MatButtonModule,
     MatTreeModule,
     MatCardModule,
-    MatToolbarModule
+    MatToolbarModule,
+    MatInputModule,
+    MatFormFieldModule,
+    FormsModule
   ],
   exports : [
     BrowserAnimationsModule,
@@ -30,7 +36,10 @@ import {MatToolbarModule} from '@angular/material/toolbar';
     MatButtonModule,
     MatTreeModule,
     MatCardModule,
-    MatToolbarModule
+    MatToolbarModule,
+    MatInputModule,
+    MatFormFieldModule,
+    FormsModule
   ]
 })
 export class MaterialModule { }
