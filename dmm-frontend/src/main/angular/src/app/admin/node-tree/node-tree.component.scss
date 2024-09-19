@@ -2,6 +2,13 @@
     width: 100%;
 }
 
+.node-card {
+    margin: 1vw;
+    display: flex;
+    flex-direction: row;
+    border: 1px solid red;
+}
+
 .node-card-title {
     display: block;
     font-weight: bold;
@@ -10,4 +17,9 @@
 
 .node-card-content {
     flex-grow: 4;
+}
+
+.node-tree-sidenav {
+    width: 25vw;
+    border: 1px solid blue;;
 }

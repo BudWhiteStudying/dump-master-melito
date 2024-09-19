@@ -12,6 +12,7 @@ import {MatCardModule} from '@angular/material/card';
 import {MatToolbarModule} from '@angular/material/toolbar';
 import {MatInputModule} from '@angular/material/input';
 import {MatFormFieldModule} from '@angular/material/form-field';
+import {MatSidenavModule} from '@angular/material/sidenav';
 import {FormsModule} from '@angular/forms';
 
 @NgModule({
@@ -27,7 +28,8 @@ import {FormsModule} from '@angular/forms';
     MatToolbarModule,
     MatInputModule,
     MatFormFieldModule,
-    FormsModule
+    FormsModule,
+    MatSidenavModule
   ],
   exports : [
     BrowserAnimationsModule,
@@ -39,7 +41,8 @@ import {FormsModule} from '@angular/forms';
     MatToolbarModule,
     MatInputModule,
     MatFormFieldModule,
-    FormsModule
+    FormsModule,
+    MatSidenavModule
   ]
 })
 export class MaterialModule { }

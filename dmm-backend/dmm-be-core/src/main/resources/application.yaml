@@ -11,7 +11,7 @@ logging:
     net:
       ttddyy:
         dsproxy:
-          listener: debug # set to 'debug' for some kick-ass SQL logs
+          listener: info # set to 'debug' for some kick-ass SQL logs
     root: INFO
 
 server:

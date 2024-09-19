@@ -2,27 +2,51 @@
     <span>Dump-Master Melito - Admin console</span>
 </mat-toolbar>
 <section id='node-tree-content' class='main-content'>
-    <mat-card appearance="outlined" *ngFor="let node of nodes" style="margin: 1vw;display: flex; flex-direction: row;">
-        <div id='node-card-content' class='node-card-content'>
-            <mat-card-content>
-                <!-- TODO: build a component for the node card -->
-                <label class='node-card-title'>Nodo {{node.id}}</label>
-                <mat-form-field id='node-description-textarea' class="node-property-textarea">
-                    <mat-label>Descrizione</mat-label>
-                    <textarea matInput placeholder="">{{node.description}}</textarea>
-                </mat-form-field>
-                <mat-form-field id='node-kind-textarea' class="node-property-textarea">
-                    <mat-label>Tipo</mat-label>
-                    <textarea matInput placeholder="">{{node.kind}}</textarea>
-                </mat-form-field>
-                <mat-form-field id='node-text-textarea' class="node-property-textarea">
-                    <mat-label>Testo</mat-label>
-                    <textarea matInput placeholder="">{{node.text}}</textarea>
-                </mat-form-field>
-            </mat-card-content>
-        </div>
-        <div id='node-card-button' style='flex-grow: 1; align-items: center; justify-content: center; display: flex;' (click)="loadNodes(node['id'])">
-            <mat-icon aria-hidden="false" aria-label="Navigation icon" fontIcon="arrow_forward_ios" style="display: flex; zoom: 2;"></mat-icon>
-        </div>
-    </mat-card>
+    <mat-sidenav-container>
+        <mat-sidenav-content style='border: 1px solid green; min-height: 70vh; background-color: white;'>
+            <mat-tree #tree [dataSource]="dataSource" [childrenAccessor]="childrenAccessor">
+                <!-- This is the tree node template for leaf nodes -->
+                <mat-tree-node *matTreeNodeDef="let node" matTreeNodePadding>
+                  <!-- use a disabled button to provide padding for tree leaf -->
+                  <button mat-icon-button disabled></button>
+                  {{node.description}}
+                </mat-tree-node>
+                <!-- This is the tree node template for expandable nodes -->
+                <mat-tree-node *matTreeNodeDef="let node;when: hasChild" matTreeNodePadding matTreeNodeToggle
+                               [cdkTreeNodeTypeaheadLabel]="node.description">
+                  <button mat-icon-button matTreeNodeToggle
+                          [attr.aria-label]="'Toggle ' + node.description">
+                    <mat-icon class="mat-icon-rtl-mirror">
+                      {{tree.isExpanded(node) ? 'expand_more' : 'chevron_right'}}
+                    </mat-icon>
+                  </button>
+                  {{node.description}}
+                  <div id='node-card-button' style='margin-left: 2vw; display: flex;' (click)="setSelectedNode($event, node); sidenav.open();">
+                      <mat-icon aria-hidden="false" aria-label="Navigation icon" fontIcon="open_in_new"></mat-icon>
+                  </div>
+                </mat-tree-node>
+              </mat-tree>
+        </mat-sidenav-content>
+        <mat-sidenav opened mode="side" position="end" #sidenav [(opened)]="opened" (opened)="events.push('open!')"
+            (closed)="events.push('close!')" class='node-tree-sidenav'>
+            <div style='margin: 1vw; border: 1px solid pink;'>
+                <mat-card-content>
+                    <!-- TODO: build a component for the node card -->
+                    <label class='node-card-title'>Nodo {{selectedNode?.id}}</label>
+                    <mat-form-field id='node-description-textarea' class="node-property-textarea">
+                        <mat-label>Descrizione</mat-label>
+                        <textarea matInput placeholder="">{{selectedNode?.description}}</textarea>
+                    </mat-form-field>
+                    <mat-form-field id='node-kind-textarea' class="node-property-textarea">
+                        <mat-label>Tipo</mat-label>
+                        <textarea matInput placeholder="">{{selectedNode?.kind}}</textarea>
+                    </mat-form-field>
+                    <mat-form-field id='node-text-textarea' class="node-property-textarea">
+                        <mat-label>Testo</mat-label>
+                        <textarea matInput placeholder="">{{selectedNode?.text}}</textarea>
+                    </mat-form-field>
+                </mat-card-content>
+            </div>
+        </mat-sidenav>
+    </mat-sidenav-container>
 </section>

@@ -1,6 +1,9 @@
 import { Component } from '@angular/core';
 import { ApiService } from '../../services/api.service';
 import { Node } from '../../model/Node';
+import { NestedTreeControl } from '@angular/cdk/tree';
+import { MatTreeNestedDataSource } from '@angular/material/tree';
+import { from, Observable } from 'rxjs';
 
 @Component({
   selector: 'app-node-tree',
@@ -9,37 +12,39 @@ import { Node } from '../../model/Node';
 })
 export class NodeTreeComponent {
 
-  nodes : Node[] = [];
+  selectedNode? : Node = undefined;
+  events: string[] = [];
+  opened: boolean = false;
 
-  constructor(private apiService: ApiService){}
+  constructor(private apiService: ApiService){
+    this.loadNodes().subscribe(
+      response => {
+        console.info('fetched initial data')
+        this.dataSource = response
+      }
+    );
+  }
   ngOnInit(): void {
-    this.loadNodes();
+  }
+  
+  
+
+  childrenAccessor = (node: Node) => this.loadNodes(node.id) ?? [];
+  dataSource : Node[] = [];
+
+  hasChild = (_: number, node: Node) => true; //TODO: make this veritable
+
+  setSelectedNode(event : MouseEvent, node : Node) {
+    event.stopPropagation();
+    this.selectedNode = node;
   }
 
-  loadNodes(nodeId? : number){
+  loadNodes(nodeId? : number) : Observable<Node[]> {
     if(nodeId || nodeId===0) {
-      this.apiService.getCollectionResource<Node>(`http://localhost:8080/dump-master-melito/nodes/search/findByParentId?parentId=${nodeId}`, 'nodes').then(
-        (response) => {
-          console.log(JSON.stringify(response, null, 4));
-          this.nodes = response;
-        }
-      ).catch(
-        (error)=> {
-          console.warn(`Could not display nodes: ${JSON.stringify(error)}`);
-        }
-      );
+      return from(this.apiService.getCollectionResource<Node>(`http://localhost:8080/dump-master-melito/nodes/search/findByParentId?parentId=${nodeId}`, 'nodes'));
     }
     else {
-      this.apiService.getCollectionResource<Node>('http://localhost:8080/dump-master-melito/nodes/search/findByParentIsNull', 'nodes').then(
-        (response) => {
-          console.log(JSON.stringify(response, null, 4));
-          this.nodes = response;
-        }
-      ).catch(
-        (error)=> {
-          console.warn(`Could not display nodes: ${JSON.stringify(error)}`);
-        }
-      );
+      return from(this.apiService.getCollectionResource<Node>('http://localhost:8080/dump-master-melito/nodes/search/findByParentIsNull', 'nodes'));
     }
   }
 }
