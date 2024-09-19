@@ -1,6 +1,6 @@
 import { HttpClient } from '@angular/common/http';
 import { Inject, Injectable } from '@angular/core';
-import { catchError, firstValueFrom, Observable, of } from 'rxjs';
+import { catchError, firstValueFrom, of } from 'rxjs';
 import { BaseLinkedObject } from '../model/BaseLinkedObject';
 import { DOCUMENT } from '@angular/common';
 import { Link } from '../model/Link';
@@ -106,5 +106,9 @@ export class ApiService {
       console.warn(`Could not find resource ${desiredResource} in response ${JSON.stringify(response)}`);
       return [];
     }
+  }
+
+  getNumber(resourceURL : string) : Promise<number> {
+    return firstValueFrom(this.http.get<number>(`${this.apiUrl}${resourceURL}`));
   }
 }

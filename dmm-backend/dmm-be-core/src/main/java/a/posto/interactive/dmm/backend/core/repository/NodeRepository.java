@@ -11,4 +11,5 @@ import java.util.List;
 public interface NodeRepository extends JpaRepository<Node, Long> {
     List<Node> findByParentIsNull();
     List<Node> findByParentId(@Param("parentId") Long parentId);
+    int countByParentId(@Param("parentId") Long parentId);
 }
