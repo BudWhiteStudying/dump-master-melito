@@ -13,12 +13,15 @@
                     matTreeNodeToggle [cdkTreeNodeTypeaheadLabel]="node.description">
                   <div class="mat-tree-node">
                     <button mat-icon-button matTreeNodeToggle
-                            [attr.aria-label]="'Toggle ' + node.description">
+                            [attr.aria-label]="'Toggle ' + node.id" *ngIf="hasChild(node) | async">
                       <mat-icon class="mat-icon-rtl-mirror">
                         {{tree.isExpanded(node) ? 'expand_more' : 'chevron_right'}}
                       </mat-icon>
                     </button>
                     {{node.description}}
+                    <div id='node-card-button' style='margin-left: 2vw; display: flex;' (click)="setSelectedNode($event, node); sidenav.open();">
+                        <mat-icon aria-hidden="false" aria-label="Navigation icon" fontIcon="open_in_new"></mat-icon>
+                    </div>
                   </div>
                   <div [class.example-tree-invisible]="!tree.isExpanded(node)"
                       role="group">
@@ -26,28 +29,6 @@
                   </div>
                 </mat-nested-tree-node>
               </mat-tree>
-            <!-- <mat-tree #tree [dataSource]="dataSource" [childrenAccessor]="childrenAccessor">
-                
-                <mat-tree-node *matTreeNodeDef="let node" matTreeNodePadding>
-                  
-                  <button mat-icon-button disabled></button>
-                  {{node.description}}
-                </mat-tree-node>
-                
-                <mat-tree-node *matTreeNodeDef="let node;when: hasChild" matTreeNodePadding matTreeNodeToggle
-                               [cdkTreeNodeTypeaheadLabel]="node.description">
-                  <button mat-icon-button matTreeNodeToggle
-                          [attr.aria-label]="'Toggle ' + node.description">
-                    <mat-icon class="mat-icon-rtl-mirror">
-                      {{tree.isExpanded(node) ? 'expand_more' : 'chevron_right'}}
-                    </mat-icon>
-                  </button>
-                  {{node.description}}
-                  <div id='node-card-button' style='margin-left: 2vw; display: flex;' (click)="setSelectedNode($event, node); sidenav.open();">
-                      <mat-icon aria-hidden="false" aria-label="Navigation icon" fontIcon="open_in_new"></mat-icon>
-                  </div>
-                </mat-tree-node>
-              </mat-tree> -->
         </mat-sidenav-content>
         <mat-sidenav opened mode="side" position="end" #sidenav [(opened)]="opened" (opened)="events.push('open!')"
             (closed)="events.push('close!')" class='node-tree-sidenav'>

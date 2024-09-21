@@ -1,7 +1,7 @@
 import { Component } from '@angular/core';
 import { ApiService } from '../../services/api.service';
 import { Node } from '../../model/Node';
-import { from } from 'rxjs';
+import { from, map, Observable, of } from 'rxjs';
 
 @Component({
   selector: 'app-node-tree',
@@ -14,9 +14,11 @@ export class NodeTreeComponent {
   events: string[] = [];
   opened: boolean = false;
   dataSource : Node[] = [];
+  hasChildCache: Map<number, Observable<boolean>> = new Map();
+
 
   constructor(private apiService: ApiService){
-    this.getNodes().then(
+    this.getNodes().subscribe(
       response => {
         console.info(`fetched initial data:\n${JSON.stringify(response, null, 4)}`)
         this.dataSource = response
@@ -26,10 +28,25 @@ export class NodeTreeComponent {
   
   childrenAccessor = (node: Node) => from(this.getNodes(node.id)) ?? [];
 
-  hasChild = async (_: number, node: Node) => {
-    let childrenCount = await this.countChildren(node.id);
-    console.debug(`hasChild is about to return ${childrenCount > 0}`);
-    return childrenCount > 0;
+  hasChild = (node: Node) => {
+    if(!node || node.id===undefined) {
+      console.log('hasChild invoked with null argument, returning false')
+      return of(false);
+    }
+    if (this.hasChildCache.has(node.id)) {
+      return this.hasChildCache.get(node.id)!;
+    }
+        // If not cached, compute and cache it
+        const observable = this.countChildren(node.id).pipe(
+          map(count => {
+            console.log(`hasChild invoked with node id ${node.id}, returning ${count > 0}`);
+            return count > 0;
+          })
+        );
+    
+        this.hasChildCache.set(node.id, observable);
+    
+        return observable;
   };
 
   setSelectedNode(event : MouseEvent, node : Node) {
@@ -37,20 +54,20 @@ export class NodeTreeComponent {
     this.selectedNode = node;
   }
 
-  async getNodes(nodeId? : number) : Promise<Node[]> {
+  getNodes(nodeId? : number) : Observable<Node[]> {
     if(nodeId || nodeId===0) {
-      return await this.apiService.getCollectionResource<Node>(`http://localhost:8080/dump-master-melito/nodes/search/findByParentId?parentId=${nodeId}`, 'nodes');
+      return this.apiService.getCollectionResource<Node>(`http://localhost:8080/dump-master-melito/nodes/search/findByParentId?parentId=${nodeId}`, 'nodes');
     }
     else {
-      return await this.apiService.getCollectionResource<Node>('http://localhost:8080/dump-master-melito/nodes/search/findByParentIsNull', 'nodes');
+      return this.apiService.getCollectionResource<Node>('http://localhost:8080/dump-master-melito/nodes/search/findByParentIsNull', 'nodes');
     }
   }
 
-  async countChildren(nodeId : number) {
-    return await this.apiService.getNumber(`nodes/search/countByParentId?parentId=${nodeId}`);
+  countChildren(nodeId : number) : Observable<number> {
+    return this.apiService.getNumber(`nodes/search/countByParentId?parentId=${nodeId}`);
   }
 
-  async getFullNodeTree(vertexNodeId : number) {
-    return await this.apiService.getItemResource<Node>(`http://localhost:8080/dump-master-melito/nodes/${vertexNodeId}`, 'node', true)
+  getFullNodeTree(vertexNodeId : number) : Observable<Node[] | Node | null> {
+    return this.apiService.getItemResource<Node>(`http://localhost:8080/dump-master-melito/nodes/${vertexNodeId}`, 'node', true)
   }
 }

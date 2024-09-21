@@ -1,6 +1,6 @@
 import { HttpClient } from '@angular/common/http';
 import { Inject, Injectable } from '@angular/core';
-import { catchError, firstValueFrom, of } from 'rxjs';
+import { catchError, from, map, mergeMap, Observable, of, switchMap, tap, toArray } from 'rxjs';
 import { BaseLinkedObject } from '../model/BaseLinkedObject';
 import { DOCUMENT } from '@angular/common';
 import { Link } from '../model/Link';
@@ -16,86 +16,101 @@ export class ApiService {
   }
   
   // returns the _embedded property of a HAL response for a resource
-  async getCollectionResource<U extends BaseLinkedObject>(resourceURL: string, resourceName: string): Promise<U[]> {
-    const response = await firstValueFrom(this.http.get<any>(resourceURL));
-    return this.getCollectionValueOrEmptyArray(response, resourceName)
+  getCollectionResource<U extends BaseLinkedObject>(resourceURL: string, resourceName: string): Observable<U[]> {
+    return this.http.get<any>(resourceURL).pipe(
+      map(response => this.getCollectionValueOrEmptyArray(response, resourceName))
+    );
   }
   
-  async getItemResource<U extends BaseLinkedObject>(resourceURL: string, resourceName: string, shouldFollowLinks: boolean): Promise<U | U[] | null> {
-    const response = await firstValueFrom(
-      this.http.get<any>(resourceURL)
-      .pipe(
-        catchError(
-          (error) => {
-            console.warn(`Issues when fetching from  ${resourceURL}: ${JSON.stringify(error)}`);
-            return of(null);
-          }
-        )
-      )
-    );
-    if(!response) {
-      return Promise.resolve(null);
-    }
-    // response could be a collection, holding an array of U within its '_embedded' property
-    // or it could be a resource of type U
-    if(response._embedded) {
-      console.debug('Resource is a collection');
-      if(!shouldFollowLinks) {
-        return this.getCollectionValueOrEmptyArray(response, resourceName);
-      }
-      else {
-        for (let item of this.getCollectionValueOrEmptyArray(response, resourceName) as U[]) {
-          for (const [resource,link] of Object.entries(item['_links'])) {
-            console.log(`key: ${resource}, value: ${link.href}`)
-            if(!['self', 'parent', 'children'].includes(resource) && !resourceName.startsWith(resource)) {
-              console.log(`Condition matched, fetching for ${resource}`);
-              const resourceValue = await this.getItemResource<U>(link.href, resource, true);
-              Object.defineProperty(
-                response,
-                resource,
-                {
-                  value: resourceValue,
-                  writable : true,
-                  enumerable : true,
-                  configurable : true
-                }
-              );
-            }
-          }
-          delete (item as Partial<U>)._links
+  getItemResource<U extends BaseLinkedObject>(resourceURL: string, resourceName: string, shouldFollowLinks: boolean): Observable<U | U[] | null> {
+    return this.http.get<any>(resourceURL).pipe(
+      catchError((error) => {
+        console.warn(`Issues when fetching from ${resourceURL}: ${JSON.stringify(error)}`);
+        return of(null);
+      }),
+      switchMap(response => {
+        if (!response) {
+          return of(null);
         }
-        delete response._links
-        return this.getCollectionValueOrEmptyArray(response, resourceName);
-      }
-    }
-    else {
-      console.debug('Resource is not a collection');
-      if(!shouldFollowLinks) {
-        delete response._links
-        return response;
-      }
-      else {
-        for (const [resource,link] of Object.entries(response['_links'] as Record<string, Link>)) {
-          console.log(`key: ${resource}, value: ${link.href}`)
-          if(!['self', 'parent', 'children'].includes(resource) && !resourceName.startsWith(resource)) {
-            console.log(`Condition matched, fetching for ${resource}`);
-            const resourceValue = await this.getItemResource<U>(link.href, resource, true);
-            Object.defineProperty(
-              response,
-              resource,
-              {
-                value: resourceValue,
-                writable : true,
-                enumerable : true,
-                configurable : true
+  
+        // If the response is a collection (_embedded exists)
+        if (response._embedded) {
+          console.debug('Resource is a collection');
+          const collection = this.getCollectionValueOrEmptyArray(response, resourceName);
+  
+          if (!shouldFollowLinks) {
+            return of(collection);
+          }
+  
+          return from(collection as U[]).pipe(
+            mergeMap(item => 
+              from(Object.entries(item['_links'])).pipe(
+                mergeMap(([resource, link]) => {
+                  console.log(`key: ${resource}, value: ${link.href}`);
+                  if (!['self', 'parent', 'children'].includes(resource) && !resourceName.startsWith(resource)) {
+                    console.log(`Condition matched, fetching for ${resource}`);
+                    return this.getItemResource<U>(link.href, resource, true).pipe(
+                      tap(resourceValue => {
+                        Object.defineProperty(item, resource, {
+                          value: resourceValue,
+                          writable: true,
+                          enumerable: true,
+                          configurable: true
+                        });
+                      })
+                    );
+                  }
+                  return of(null);
+                }),
+                toArray(),
+                map(() => {
+                  delete (item as Partial<U>)._links;
+                  return item;
+                })
+              )
+            ),
+            toArray(),
+            map(() => {
+              delete response._links;
+              return this.getCollectionValueOrEmptyArray(response, resourceName);
+            })
+          );
+        } 
+        // If the response is a single resource
+        else {
+          console.debug('Resource is not a collection');
+          if (!shouldFollowLinks) {
+            delete response._links;
+            return of(response);
+          }
+  
+          return from(Object.entries(response['_links'] as Record<string, Link>)).pipe(
+            mergeMap(([resource, link]) => {
+              console.log(`key: ${resource}, value: ${link.href}`);
+              if (!['self', 'parent', 'children'].includes(resource) && !resourceName.startsWith(resource)) {
+                console.log(`Condition matched, fetching for ${resource}`);
+                return this.getItemResource<U>(link.href, resource, true).pipe(
+                  tap(resourceValue => {
+                    Object.defineProperty(response, resource, {
+                      value: resourceValue,
+                      writable: true,
+                      enumerable: true,
+                      configurable: true
+                    });
+                  })
+                );
               }
-            );
-          }
+              return of(null);
+            }),
+            toArray(),
+            map(() => {
+              delete response._links;
+              return response;
+            })
+          );
         }
-        delete response._links
-        return response;
-      }
-    }
+      })
+    );
   }
 
   getCollectionValueOrEmptyArray<U extends BaseLinkedObject>(response : any, desiredResource  :string) : U[] {
@@ -108,7 +123,7 @@ export class ApiService {
     }
   }
 
-  getNumber(resourceURL : string) : Promise<number> {
-    return firstValueFrom(this.http.get<number>(`${this.apiUrl}${resourceURL}`));
+  getNumber(resourceURL : string) : Observable<number> {
+    return this.http.get<number>(`${this.apiUrl}${resourceURL}`);
   }
 }
