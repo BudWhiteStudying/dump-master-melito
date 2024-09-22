@@ -22,32 +22,32 @@ public class Node extends BaseEntity {
     private NodeType kind;
     private String text;
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.DETACH)
     @JoinColumn(name = "background_id", foreignKey = @ForeignKey(name = "FK_NODE__BKG_IMAGE"))
     @RestResource(path = "background-image", rel = "background-image")
     private BackgroundImage backgroundImage;
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.DETACH)
     @JoinColumn(name = "soundtrack_id", foreignKey = @ForeignKey(name = "FK_NODE__SOUNDTRACK"))
     @RestResource(path = "soundtrack", rel = "soundtrack")
     private Sound soundtrack;
 
-    @OneToMany(mappedBy = "node", fetch = FetchType.LAZY)
+    @OneToMany(mappedBy = "node", fetch = FetchType.LAZY, cascade = CascadeType.REMOVE)
     @RestResource(path = "outcomes", rel = "outcomes")
     private Set<Outcome> outcomes;
 
-    @OneToMany(mappedBy = "dialog", fetch = FetchType.LAZY)
+    @OneToMany(mappedBy = "dialog", fetch = FetchType.LAZY, cascade = CascadeType.REMOVE)
     @RestResource(path = "lines", rel = "lines")
     private Set<Line> lines;
 
     //Node hierarchy relationships
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.DETACH)
     @JoinColumn(name = "parent_id", foreignKey = @ForeignKey(name = "FK_NODE__PARENT"))
     @RestResource(path = "parent", rel = "parent")
     private Node parent;
 
-    @OneToMany(mappedBy = "parent", fetch = FetchType.LAZY)
+    @OneToMany(mappedBy = "parent", fetch = FetchType.LAZY, cascade = CascadeType.REMOVE)
     @RestResource(path = "children", rel = "children")
     @EqualsAndHashCode.Exclude
     private Set<Node> children;

@@ -22,18 +22,13 @@ export class NodeTreeComponent {
 
 
   constructor(private apiService: ApiService){
-    this.getNodes().subscribe(
-      response => {
-        console.debug(`fetched initial data:\n${JSON.stringify(response, null, 4)}`)
-        this.dataSource = response
-      }
-    );
+    this.initializeDatasource();
   }
   
-  childrenAccessor = (node: Node) => from(this.getNodes(node.id)) ?? [];
+  childrenAccessor = (node: Node) => from(this.getNodes(node.id!)) ?? [];
 
   hasChild = (node: Node) => {
-    if(!node || node.id===undefined) {
+    if(!node || node.id===undefined || node.id===null) {
       console.debug('hasChild invoked with null argument, returning false')
       return of(false);
     }
@@ -90,6 +85,37 @@ export class NodeTreeComponent {
     );
   }
 
+  deleteNode(node : Node) {
+    console.debug(`deleting node ${node.id}`);
+    this.apiService.deleteResource(`nodes/${node.id}`, node).subscribe(
+      response => {
+        this.initializeDatasource();
+        console.debug(JSON.stringify(response))
+      }
+      //TODO: handle error case
+    );
+  }
+
+  createNode(parentNode : Node) {
+    console.debug(`creating new node`);
+    const node = {
+      id : null,
+      description : 'new node',
+      kind : 'DIALOG',
+      text : 'This is a new node',
+      _links : null
+    }
+    this.apiService.createResource(`nodes`, node).subscribe(
+      response => {
+        console.debug(`new node created with id ${response.id}`)
+        this.apiService.createRelationship('nodes', 'parent', response.id!, parentNode.id!).subscribe(
+          relationshipResponse => {console.log('relationship created')}
+        )
+      }
+      //TODO: handle error case
+    );
+  }
+
   getNodes(nodeId? : number) : Observable<Node[]> {
     if(nodeId || nodeId===0) {
       return this.apiService.getCollectionResource<Node>(`http://localhost:8080/dump-master-melito/nodes/search/findByParentId?parentId=${nodeId}`, 'nodes');
@@ -105,5 +131,14 @@ export class NodeTreeComponent {
 
   getFullNodeTree(vertexNodeId : number) : Observable<Node[] | Node | null> {
     return this.apiService.getItemResource<Node>(`http://localhost:8080/dump-master-melito/nodes/${vertexNodeId}`, 'node', true)
+  }
+
+  initializeDatasource() {
+    this.getNodes().subscribe(
+      response => {
+        console.debug(`fetched initial data:\n${JSON.stringify(response, null, 4)}`)
+        this.dataSource = response
+      }
+    );
   }
 }

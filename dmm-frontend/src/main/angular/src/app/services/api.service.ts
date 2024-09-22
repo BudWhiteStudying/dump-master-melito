@@ -44,7 +44,7 @@ export class ApiService {
   
           return from(collection as U[]).pipe(
             mergeMap(item => 
-              from(Object.entries(item['_links'])).pipe(
+              from(Object.entries(item['_links']!)).pipe(
                 mergeMap(([resource, link]) => {
                   console.log(`key: ${resource}, value: ${link.href}`);
                   if (!['self', 'parent', 'children'].includes(resource) && !resourceName.startsWith(resource)) {
@@ -131,6 +131,29 @@ export class ApiService {
     return this.http.put<U>(
         this.apiUrl + resourcePath,
         updatedInstance
+    )
+  }
+
+  deleteResource<U extends BaseLinkedObject>(resourcePath : string, updatedInstance : U): Observable<U> {
+    return this.http.delete<U>(
+        this.apiUrl + resourcePath
+    )
+  }
+
+  createResource<U extends BaseLinkedObject>(resourcePath : string, newInstance : U): Observable<U> {
+    return this.http.post<U>(
+        this.apiUrl + resourcePath,
+        newInstance
+    )
+  }
+
+  createRelationship(resourcePath : string, relationshipName : string, owningResourceId : number, ownedResourceId : number) {
+    return this.http.put(
+      `${this.apiUrl}${resourcePath}/${owningResourceId}/${relationshipName}`,
+      `${this.apiUrl}${resourcePath}/${ownedResourceId}`,
+      {
+        headers : {'Content-type' : 'text/uri-list'}
+      }
     )
   }
 }
