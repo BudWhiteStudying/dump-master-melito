@@ -16,11 +16,15 @@ export class NodeTreeComponent {
   dataSource : Node[] = [];
   hasChildCache: Map<number, Observable<boolean>> = new Map();
 
+  updateInProgress : boolean = false;
+  updateCompleted : boolean = false;
+  updateFailed : boolean = false;
+
 
   constructor(private apiService: ApiService){
     this.getNodes().subscribe(
       response => {
-        console.info(`fetched initial data:\n${JSON.stringify(response, null, 4)}`)
+        console.debug(`fetched initial data:\n${JSON.stringify(response, null, 4)}`)
         this.dataSource = response
       }
     );
@@ -30,7 +34,7 @@ export class NodeTreeComponent {
 
   hasChild = (node: Node) => {
     if(!node || node.id===undefined) {
-      console.log('hasChild invoked with null argument, returning false')
+      console.debug('hasChild invoked with null argument, returning false')
       return of(false);
     }
     if (this.hasChildCache.has(node.id)) {
@@ -49,9 +53,41 @@ export class NodeTreeComponent {
         return observable;
   };
 
-  setSelectedNode(event : MouseEvent, node : Node) {
-    event.stopPropagation();
-    this.selectedNode = node;
+  setSelectedNode(node : Node, event? : MouseEvent) {
+    event?.stopPropagation();
+    this.selectedNode = {
+      id : node.id,
+      description : node.description,
+      text : node.text,
+      kind : node.kind,
+      _links : node._links
+    };
+  }
+
+  hasBeenModified(node : Node) : boolean {
+    const nodeFromBackend : Node = this.dataSource.filter(n => n.id===node.id)[0];
+    const isModified = node.description !== nodeFromBackend.description
+    || node.kind !== nodeFromBackend.kind
+    || node.text !== nodeFromBackend.text;
+    return isModified;
+  }
+
+  updateNode(node : Node) {
+    console.debug(`updating node ${node.id}`);
+    this.updateInProgress = true;
+    this.apiService.updateResource(`nodes/${node.id}`, node).subscribe(
+      response => {
+        this.updateInProgress = false;
+        this.updateCompleted = true;
+        this.dataSource = this.dataSource.map(
+          n => n.id === node.id ? node : n
+        );
+        this.setSelectedNode(node);
+        setTimeout(()=>this.updateCompleted = false, 1000);
+        console.debug(JSON.stringify(response))
+      }
+      //TODO: handle error case
+    );
   }
 
   getNodes(nodeId? : number) : Observable<Node[]> {

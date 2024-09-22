@@ -126,4 +126,11 @@ export class ApiService {
   getNumber(resourceURL : string) : Observable<number> {
     return this.http.get<number>(`${this.apiUrl}${resourceURL}`);
   }
+
+  updateResource<U extends BaseLinkedObject>(resourcePath : string, updatedInstance : U): Observable<U> {
+    return this.http.put<U>(
+        this.apiUrl + resourcePath,
+        updatedInstance
+    )
+  }
 }

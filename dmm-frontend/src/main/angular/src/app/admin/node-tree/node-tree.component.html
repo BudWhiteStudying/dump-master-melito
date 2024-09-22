@@ -3,7 +3,7 @@
 </mat-toolbar>
 <section id='node-tree-content' class='main-content'>
     <mat-sidenav-container>
-        <mat-sidenav-content style='border: 1px solid green; min-height: 70vh; background-color: white;'>
+        <mat-sidenav-content class='node-tree-sidenav-content'>
             <mat-tree #tree [dataSource]="dataSource" [childrenAccessor]="childrenAccessor" class="example-tree">
                 <mat-tree-node *matTreeNodeDef="let node">
                   {{node.description}}
@@ -19,8 +19,14 @@
                       </mat-icon>
                     </button>
                     {{node.description}}
-                    <div id='node-card-button' style='margin-left: 2vw; display: flex;' (click)="setSelectedNode($event, node); sidenav.open();">
-                        <mat-icon aria-hidden="false" aria-label="Navigation icon" fontIcon="open_in_new"></mat-icon>
+                    <div id='node-more-button' class='node-icon' (click)="setSelectedNode(node, $event); sidenav.open();">
+                        <mat-icon aria-hidden="false" aria-label="More icon" fontIcon="open_in_new"></mat-icon>
+                    </div>
+                    <div id='node-add-button' class='node-icon'>
+                        <mat-icon aria-hidden="false" aria-label="Add icon" fontIcon="add_circle"></mat-icon>
+                    </div>
+                    <div id='node-remove-button' class='node-icon red-icon'>
+                        <mat-icon aria-hidden="false" aria-label="Add icon" fontIcon="delete"></mat-icon>
                     </div>
                   </div>
                   <div [class.example-tree-invisible]="!tree.isExpanded(node)"
@@ -32,22 +38,28 @@
         </mat-sidenav-content>
         <mat-sidenav opened mode="side" position="end" #sidenav [(opened)]="opened" (opened)="events.push('open!')"
             (closed)="events.push('close!')" class='node-tree-sidenav'>
-            <div style='margin: 1vw; border: 1px solid pink;'>
-                <mat-card-content>
+            <div style='margin: 1vw;'>
+                <mat-card-content *ngIf="selectedNode">
                     <!-- TODO: build a component for the node card -->
-                    <label class='node-card-title'>Nodo {{selectedNode?.id}}</label>
+                    <label class='node-card-title'>Nodo {{selectedNode.id}}</label>
                     <mat-form-field id='node-description-textarea' class="node-property-textarea">
                         <mat-label>Descrizione</mat-label>
-                        <textarea matInput placeholder="">{{selectedNode?.description}}</textarea>
+                        <textarea matInput placeholder="" [(ngModel)]="selectedNode!.description"></textarea>
                     </mat-form-field>
                     <mat-form-field id='node-kind-textarea' class="node-property-textarea">
                         <mat-label>Tipo</mat-label>
-                        <textarea matInput placeholder="">{{selectedNode?.kind}}</textarea>
+                        <textarea matInput placeholder="" [(ngModel)]="selectedNode!.kind"></textarea>
                     </mat-form-field>
                     <mat-form-field id='node-text-textarea' class="node-property-textarea">
                         <mat-label>Testo</mat-label>
-                        <textarea matInput placeholder="">{{selectedNode?.text}}</textarea>
+                        <textarea matInput placeholder="" [(ngModel)]="selectedNode!.text"></textarea>
                     </mat-form-field>
+                    <button mat-fab extended (click)='updateNode(selectedNode!)' [disabled]='!hasBeenModified(selectedNode)'>
+                      AGGIORNA
+                      <mat-icon *ngIf='updateInProgress'>sync</mat-icon>
+                      <mat-icon *ngIf='updateCompleted'>check_circle</mat-icon>
+                      <mat-icon *ngIf='updateFailed'>error</mat-icon>
+                    </button>
                 </mat-card-content>
             </div>
         </mat-sidenav>

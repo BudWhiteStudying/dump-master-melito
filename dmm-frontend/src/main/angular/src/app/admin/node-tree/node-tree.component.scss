@@ -2,11 +2,17 @@
     width: 100%;
 }
 
+.node-tree-sidenav-content {
+  //border: 1px solid green;
+  min-height: 70vh;
+  background-color: white;
+}
+
 .node-card {
     margin: 1vw;
     display: flex;
     flex-direction: row;
-    border: 1px solid red;
+    //border: 1px solid red;
 }
 
 .node-card-title {
@@ -21,9 +27,17 @@
 
 .node-tree-sidenav {
     width: 25vw;
-    border: 1px solid blue;;
+    //border: 1px solid blue;
 }
 
+.node-icon {
+  margin-left: 2vw;
+  display: flex;
+}
+
+.red-icon {
+  color: darkred;
+}
 
 /* from the guide */
 .example-tree-invisible {
@@ -37,18 +51,10 @@
     list-style-type: none;
   }
   
-  /*
-   * This padding sets alignment of the nested nodes.
-   */
   .example-tree .mat-nested-tree-node div[role=group] {
     padding-left: 40px;
   }
   
-  /*
-   * Padding for leaf nodes.
-   * Leaf nodes need to have padding so as to align with other non-leaf nodes
-   * under the same parent.
-   */
   .example-tree div[role=group] > .mat-tree-node {
     padding-left: 40px;
   }
