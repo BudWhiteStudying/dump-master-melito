@@ -14,12 +14,18 @@ public class RestRepositoryConfig implements RepositoryRestConfigurer {
 
     @Value("${api.cors.allowed.origins}")
     private String allowedCorsOrigins;
+
+    @Value("${api.cors.allowed.methods}")
+    private String[] allowedCorsMethods;
+
     private final Repositories repositories;
 
     @Override
     public void configureRepositoryRestConfiguration(RepositoryRestConfiguration config, CorsRegistry cors) {
         RepositoryRestConfigurer.super.configureRepositoryRestConfiguration(config, cors);
-        cors.addMapping("/**").allowedOrigins(allowedCorsOrigins);
+        cors.addMapping("/**")
+                .allowedOrigins(allowedCorsOrigins)
+                .allowedMethods(allowedCorsMethods);
         repositories.iterator().forEachRemaining(config::exposeIdsFor);
     }
 }

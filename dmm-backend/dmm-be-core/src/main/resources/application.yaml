@@ -2,6 +2,7 @@ api:
   cors:
     allowed:
       origins: '*'
+      methods: GET,PUT,POST,DELETE
 
 application:
   label: Dump Master Melito
