@@ -6,13 +6,17 @@ import { MaterialModule } from '../material/material.module';
 import { ApiService } from '../services/api.service';
 import { HttpClientModule, provideHttpClient, withInterceptorsFromDi } from '@angular/common/http';
 import { AppRoutingModule } from '../app-routing.module';
+import { NodeCreationComponent } from './node-creation/node-creation.component';
+import { NodeDeletionComponent } from './node-deletion/node-deletion.component';
 
 
 
 @NgModule({
   declarations: [
     NodeDetailsComponent,
-    NodeTreeComponent
+    NodeTreeComponent,
+    NodeCreationComponent,
+    NodeDeletionComponent
   ],
   imports: [
     CommonModule,
