@@ -18,6 +18,7 @@
                         {{tree.isExpanded(node) ? 'expand_more' : 'chevron_right'}}
                       </mat-icon>
                     </button>
+                    <mat-icon class='mat-mdc-icon-button' style="cursor: auto;" fontIcon="remove" *ngIf="!(hasChild(node) | async)"></mat-icon>
                     {{node.description}}
                     <div id='node-more-button' class='node-icon clickable-icon' (click)="setSelectedNode(node, $event); sidenav.open();">
                         <mat-icon aria-hidden="false" aria-label="More icon" fontIcon="open_in_new"></mat-icon>
@@ -40,6 +41,11 @@
             (closed)="events.push('close!')" class='node-tree-sidenav'>
             <div style='margin: 1vw;'>
                 <mat-card-content *ngIf="selectedNode">
+                  <button mat-icon-button [attr.aria-label]="'Close sidebar'" (click)='sidenav.close()'>
+                    <mat-icon class="mat-icon-rtl-mirror">
+                      close
+                    </mat-icon>
+                  </button>
                     <!-- TODO: build a component for the node card -->
                     <label class='node-card-title'>Nodo {{selectedNode.id}}</label>
                     <mat-form-field id='node-description-textarea' class="node-property-textarea">

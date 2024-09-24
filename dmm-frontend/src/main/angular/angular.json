@@ -24,7 +24,6 @@
         "build": {
           "builder": "@angular-devkit/build-angular:application",
           "options": {
-            "baseHref": "/dump-master-melito/",
             "outputPath": "dist/dmm-frontend",
             "index": "src/index.html",
             "browser": "src/main.ts",

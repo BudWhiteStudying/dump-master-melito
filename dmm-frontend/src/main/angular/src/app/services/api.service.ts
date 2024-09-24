@@ -1,31 +1,32 @@
 import { HttpClient } from '@angular/common/http';
-import { Inject, Injectable } from '@angular/core';
+import { Injectable } from '@angular/core';
 import { catchError, from, map, mergeMap, Observable, of, switchMap, tap, toArray } from 'rxjs';
 import { BaseLinkedObject } from '../model/BaseLinkedObject';
-import { DOCUMENT } from '@angular/common';
 import { Link } from '../model/Link';
+import { ConfigService } from './config.service';
 
 @Injectable({
   providedIn: 'root'
 })
 export class ApiService {
-  private apiUrl = 'http://localhost:8080';
+  private apiUrl : string | undefined;
 
-  constructor(private http: HttpClient, @Inject(DOCUMENT) private document: Document) {
-    this.apiUrl += this.document.querySelector('base')?.getAttribute('href') || '/';
+  constructor(private http: HttpClient, private configService: ConfigService) {
+    console.log(`${configService.configuration.server.baseHost}${configService.configuration.server.contextPath}`);
+    this.apiUrl = `${configService.configuration.server.baseHost}${configService.configuration.server.contextPath}`;
   }
   
   // returns the _embedded property of a HAL response for a resource
-  getCollectionResource<U extends BaseLinkedObject>(resourceURL: string, resourceName: string): Observable<U[]> {
-    return this.http.get<any>(resourceURL).pipe(
+  getCollectionResource<U extends BaseLinkedObject>(resourcePath: string, resourceName: string): Observable<U[]> {
+    return this.http.get<any>(`${this.apiUrl}${resourcePath}`).pipe(
       map(response => this.getCollectionValueOrEmptyArray(response, resourceName))
     );
   }
   
-  getItemResource<U extends BaseLinkedObject>(resourceURL: string, resourceName: string, shouldFollowLinks: boolean): Observable<U | U[] | null> {
-    return this.http.get<any>(resourceURL).pipe(
+  getItemResource<U extends BaseLinkedObject>(resourcePath: string, resourceName: string, shouldFollowLinks: boolean): Observable<U | U[] | null> {
+    return this.http.get<any>(`${this.apiUrl}${resourcePath}`).pipe(
       catchError((error) => {
-        console.warn(`Issues when fetching from ${resourceURL}: ${JSON.stringify(error)}`);
+        console.warn(`Issues when fetching from ${this.apiUrl}${resourcePath}: ${JSON.stringify(error)}`);
         return of(null);
       }),
       switchMap(response => {
@@ -49,7 +50,7 @@ export class ApiService {
                   console.log(`key: ${resource}, value: ${link.href}`);
                   if (!['self', 'parent', 'children'].includes(resource) && !resourceName.startsWith(resource)) {
                     console.log(`Condition matched, fetching for ${resource}`);
-                    return this.getItemResource<U>(link.href, resource, true).pipe(
+                    return this.getItemResource<U>(link.href.slice(this.apiUrl?.length), resource, true).pipe(
                       tap(resourceValue => {
                         Object.defineProperty(item, resource, {
                           value: resourceValue,
@@ -89,7 +90,7 @@ export class ApiService {
               console.log(`key: ${resource}, value: ${link.href}`);
               if (!['self', 'parent', 'children'].includes(resource) && !resourceName.startsWith(resource)) {
                 console.log(`Condition matched, fetching for ${resource}`);
-                return this.getItemResource<U>(link.href, resource, true).pipe(
+                return this.getItemResource<U>(link.href.slice(this.apiUrl?.length), resource, true).pipe(
                   tap(resourceValue => {
                     Object.defineProperty(response, resource, {
                       value: resourceValue,
@@ -129,20 +130,20 @@ export class ApiService {
 
   updateResource<U extends BaseLinkedObject>(resourcePath : string, updatedInstance : U): Observable<U> {
     return this.http.put<U>(
-        this.apiUrl + resourcePath,
+        `${this.apiUrl}${resourcePath}`,
         updatedInstance
     )
   }
 
-  deleteResource<U extends BaseLinkedObject>(resourcePath : string, updatedInstance : U): Observable<U> {
+  deleteResource<U extends BaseLinkedObject>(resourcePath : string): Observable<U> {
     return this.http.delete<U>(
-        this.apiUrl + resourcePath
+        `${this.apiUrl}${resourcePath}`
     )
   }
 
   createResource<U extends BaseLinkedObject>(resourcePath : string, newInstance : U): Observable<U> {
     return this.http.post<U>(
-        this.apiUrl + resourcePath,
+        `${this.apiUrl}${resourcePath}`,
         newInstance
     )
   }

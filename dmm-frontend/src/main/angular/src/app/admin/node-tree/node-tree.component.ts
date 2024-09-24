@@ -10,6 +10,7 @@ import { from, map, Observable, of } from 'rxjs';
 })
 export class NodeTreeComponent {
 
+  selectedNodeInitialState? : Node = undefined;
   selectedNode? : Node = undefined;
   events: string[] = [];
   opened: boolean = false;
@@ -50,6 +51,13 @@ export class NodeTreeComponent {
 
   setSelectedNode(node : Node, event? : MouseEvent) {
     event?.stopPropagation();
+    this.selectedNodeInitialState = {
+      id : node.id,
+      description : node.description,
+      text : node.text,
+      kind : node.kind,
+      _links : node._links
+    };
     this.selectedNode = {
       id : node.id,
       description : node.description,
@@ -60,17 +68,16 @@ export class NodeTreeComponent {
   }
 
   hasBeenModified(node : Node) : boolean {
-    const nodeFromBackend : Node = this.dataSource.filter(n => n.id===node.id)[0];
-    const isModified = node.description !== nodeFromBackend.description
-    || node.kind !== nodeFromBackend.kind
-    || node.text !== nodeFromBackend.text;
+    const isModified = node.description !== this.selectedNodeInitialState!.description
+    || node.kind !== this.selectedNodeInitialState!.kind
+    || node.text !== this.selectedNodeInitialState!.text;
     return isModified;
   }
 
   updateNode(node : Node) {
     console.debug(`updating node ${node.id}`);
     this.updateInProgress = true;
-    this.apiService.updateResource(`nodes/${node.id}`, node).subscribe(
+    this.apiService.updateResource(`/nodes/${node.id}`, node).subscribe(
       response => {
         this.updateInProgress = false;
         this.updateCompleted = true;
@@ -87,7 +94,7 @@ export class NodeTreeComponent {
 
   deleteNode(node : Node) {
     console.debug(`deleting node ${node.id}`);
-    this.apiService.deleteResource(`nodes/${node.id}`, node).subscribe(
+    this.apiService.deleteResource(`/nodes/${node.id}`).subscribe(
       response => {
         this.initializeDatasource();
         console.debug(JSON.stringify(response))
@@ -105,11 +112,15 @@ export class NodeTreeComponent {
       text : 'This is a new node',
       _links : null
     }
-    this.apiService.createResource(`nodes`, node).subscribe(
-      response => {
-        console.debug(`new node created with id ${response.id}`)
-        this.apiService.createRelationship('nodes', 'parent', response.id!, parentNode.id!).subscribe(
-          relationshipResponse => {console.log('relationship created')}
+    this.apiService.createResource(`/nodes`, node).subscribe(
+      creationResponse => {
+        console.debug(`new node created with id ${creationResponse.id}`)
+        this.apiService.createRelationship('/nodes', 'parent', creationResponse.id!, parentNode.id!).subscribe(
+          relationshipResponse => {
+            console.log('relationship created');
+            this.hasChildCache.delete(parentNode.id!);
+            this.initializeDatasource();
+          }
         )
       }
       //TODO: handle error case
@@ -118,19 +129,19 @@ export class NodeTreeComponent {
 
   getNodes(nodeId? : number) : Observable<Node[]> {
     if(nodeId || nodeId===0) {
-      return this.apiService.getCollectionResource<Node>(`http://localhost:8080/dump-master-melito/nodes/search/findByParentId?parentId=${nodeId}`, 'nodes');
+      return this.apiService.getCollectionResource<Node>(`/nodes/search/findByParentId?parentId=${nodeId}`, 'nodes');
     }
     else {
-      return this.apiService.getCollectionResource<Node>('http://localhost:8080/dump-master-melito/nodes/search/findByParentIsNull', 'nodes');
+      return this.apiService.getCollectionResource<Node>('/nodes/search/findByParentIsNull', 'nodes');
     }
   }
 
   countChildren(nodeId : number) : Observable<number> {
-    return this.apiService.getNumber(`nodes/search/countByParentId?parentId=${nodeId}`);
+    return this.apiService.getNumber(`/nodes/search/countByParentId?parentId=${nodeId}`);
   }
 
   getFullNodeTree(vertexNodeId : number) : Observable<Node[] | Node | null> {
-    return this.apiService.getItemResource<Node>(`http://localhost:8080/dump-master-melito/nodes/${vertexNodeId}`, 'node', true)
+    return this.apiService.getItemResource<Node>(`/nodes/${vertexNodeId}`, 'node', true)
   }
 
   initializeDatasource() {

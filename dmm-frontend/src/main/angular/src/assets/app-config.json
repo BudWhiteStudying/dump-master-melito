@@ -1,0 +1,6 @@
+{
+    "server" : {
+        "baseHost" : "http://localhost:8080",
+        "contextPath" : "/dump-master-melito"
+    }
+}
