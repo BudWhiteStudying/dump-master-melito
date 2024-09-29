@@ -4,6 +4,7 @@ import { Node } from '../../model/Node';
 import { from, map, Observable, of } from 'rxjs';
 import { MatDialog } from '@angular/material/dialog';
 import { NodeDeletionComponent } from '../node-deletion/node-deletion.component';
+import { NodeCreationComponent } from '../node-creation/node-creation.component';
 
 @Component({
   selector: 'app-node-tree',
@@ -24,22 +25,35 @@ export class NodeTreeComponent {
   updateFailed : boolean = false;
   readonly dialog = inject(MatDialog);
 
-  openDialog(nodeToDelete : Node): void {
+  constructor(private apiService: ApiService){
+    this.initializeDatasource();
+  }
+
+  openDeletionDialog(nodeToDelete : Node): void {
     const dialogRef = this.dialog.open(NodeDeletionComponent, {
       data: nodeToDelete,
     });
 
     dialogRef.afterClosed().subscribe(result => {
-      console.log(`The dialog was closed, result is ${result}`);
+      console.debug(`The deletion dialog was closed, result is ${result}`);
       if(result) {
         this.initializeDatasource();
       }
     });
   }
 
+  openCreationDialog(parentNode : Node): void {
+    const dialogRef = this.dialog.open(NodeCreationComponent, {
+      data: parentNode.id,
+    });
 
-  constructor(private apiService: ApiService){
-    this.initializeDatasource();
+    dialogRef.afterClosed().subscribe(result => {
+      console.debug(`The creation dialog was closed, result is ${result}`);
+      if(result) {
+        this.hasChildCache.delete(parentNode.id!);
+        this.initializeDatasource();
+      }
+    });
   }
   
   childrenAccessor = (node: Node) => from(this.getNodes(node.id!)) ?? [];
@@ -108,41 +122,6 @@ export class NodeTreeComponent {
     );
   }
 
-  deleteNode(node : Node) {
-    console.debug(`deleting node ${node.id}`);
-    this.apiService.deleteResource(`/nodes/${node.id}`).subscribe(
-      response => {
-        this.initializeDatasource();
-        console.debug(JSON.stringify(response))
-      }
-      //TODO: handle error case
-    );
-  }
-
-  createNode(parentNode : Node) {
-    console.debug(`creating new node`);
-    const node = {
-      id : null,
-      description : 'new node',
-      kind : 'DIALOG',
-      text : 'This is a new node',
-      _links : null
-    }
-    this.apiService.createResource(`/nodes`, node).subscribe(
-      creationResponse => {
-        console.debug(`new node created with id ${creationResponse.id}`)
-        this.apiService.createRelationship('/nodes', 'parent', creationResponse.id!, parentNode.id!).subscribe(
-          relationshipResponse => {
-            console.log('relationship created');
-            this.hasChildCache.delete(parentNode.id!);
-            this.initializeDatasource();
-          }
-        )
-      }
-      //TODO: handle error case
-    );
-  }
-
   getNodes(nodeId? : number) : Observable<Node[]> {
     if(nodeId || nodeId===0) {
       return this.apiService.getCollectionResource<Node>(`/nodes/search/findByParentId?parentId=${nodeId}`, 'nodes');
@@ -154,10 +133,6 @@ export class NodeTreeComponent {
 
   countChildren(nodeId : number) : Observable<number> {
     return this.apiService.getNumber(`/nodes/search/countByParentId?parentId=${nodeId}`);
-  }
-
-  getFullNodeTree(vertexNodeId : number) : Observable<Node[] | Node | null> {
-    return this.apiService.getItemResource<Node>(`/nodes/${vertexNodeId}`, 'node', true)
   }
 
   initializeDatasource() {

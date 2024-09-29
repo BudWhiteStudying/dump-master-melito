@@ -9,8 +9,6 @@ import { MAT_DIALOG_DATA, MatDialogConfig } from '@angular/material/dialog';
   styleUrl: './node-deletion.component.scss'
 })
 export class NodeDeletionComponent {
-  
-
   readonly nodeToDelete = inject<Node>(MAT_DIALOG_DATA);
   deleted : Boolean = false;
   readonly deletedModel = model(this.deleted);

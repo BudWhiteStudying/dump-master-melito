@@ -1,1 +1,20 @@
-<p>node-creation works!</p>
+<mat-dialog-content>
+    <p>Create new node</p>
+    <mat-form-field id='node-description-textarea' class="node-property-textarea">
+        <mat-label>Descrizione</mat-label>
+        <textarea matInput placeholder="" [(ngModel)]="nodeToCreate.description"></textarea>
+    </mat-form-field>
+    <mat-form-field id='node-kind-textarea' class="node-property-textarea">
+        <mat-label>Tipo</mat-label>
+        <textarea matInput placeholder="" [(ngModel)]="nodeToCreate.kind"></textarea>
+    </mat-form-field>
+    <mat-form-field id='node-text-textarea' class="node-property-textarea">
+        <mat-label>Testo</mat-label>
+        <textarea matInput placeholder="" [(ngModel)]="nodeToCreate.text"></textarea>
+    </mat-form-field>
+
+  </mat-dialog-content>
+  <mat-dialog-actions>
+    <button mat-button>Cancel</button>
+    <button mat-button (click)="confirm()" cdkFocusInitial>Confirm</button>
+  </mat-dialog-actions>
