@@ -1,0 +1,10 @@
+{
+    "IT" : {
+        "CONFIRM" : "Conferma",
+        "CANCEL" : "Annulla"
+    },
+    "EN" : {
+        "CONFIRM" : "Confirm",
+        "CANCEL" : "Cancel"
+    }
+}

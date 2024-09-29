@@ -7,9 +7,17 @@ import { LandingModule } from './landing/landing.module';
 import { PlayModule } from './play/play.module';
 import { AdminModule } from './admin/admin.module';
 import { ConfigService } from './services/config.service';
+import { SharedModule } from './shared/shared.module';
+import { TranslationService } from './services/translation.service';
 
-export function initializeApp(configService: ConfigService) {
-  return () => configService.loadConfiguration();
+export function initializeApp(
+  configService: ConfigService,
+  translationService : TranslationService
+) {
+  return () => Promise.all(
+    [configService.loadConfiguration(),
+    translationService.loadConfiguration()]
+  );
 }
 
 
@@ -28,7 +36,7 @@ export function initializeApp(configService: ConfigService) {
     {
       provide: APP_INITIALIZER,
       useFactory: initializeApp,
-      deps: [ConfigService],
+      deps: [ConfigService, TranslationService],
       multi: true
     }
   ],

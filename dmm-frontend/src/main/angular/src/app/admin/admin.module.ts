@@ -8,6 +8,7 @@ import { HttpClientModule, provideHttpClient, withInterceptorsFromDi } from '@an
 import { AppRoutingModule } from '../app-routing.module';
 import { NodeCreationComponent } from './node-creation/node-creation.component';
 import { NodeDeletionComponent } from './node-deletion/node-deletion.component';
+import { SharedModule } from '../shared/shared.module';
 
 
 
@@ -21,6 +22,7 @@ import { NodeDeletionComponent } from './node-deletion/node-deletion.component';
   imports: [
     CommonModule,
     MaterialModule,
+    SharedModule,
     AppRoutingModule
   ],
   providers: [

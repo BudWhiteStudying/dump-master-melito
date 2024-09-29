@@ -15,6 +15,6 @@
 
   </mat-dialog-content>
   <mat-dialog-actions>
-    <button mat-button>Cancel</button>
-    <button mat-button (click)="confirm()" cdkFocusInitial>Confirm</button>
+    <button mat-button [mat-dialog-close]='false'>{{'CANCEL' | translate}}</button>
+    <button mat-button (click)="confirm()" cdkFocusInitial>{{'CONFIRM' | translate}}</button>
   </mat-dialog-actions>
