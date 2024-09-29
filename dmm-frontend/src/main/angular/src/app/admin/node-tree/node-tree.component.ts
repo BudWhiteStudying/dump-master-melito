@@ -1,7 +1,9 @@
-import { Component } from '@angular/core';
+import { Component, inject } from '@angular/core';
 import { ApiService } from '../../services/api.service';
 import { Node } from '../../model/Node';
 import { from, map, Observable, of } from 'rxjs';
+import { MatDialog } from '@angular/material/dialog';
+import { NodeDeletionComponent } from '../node-deletion/node-deletion.component';
 
 @Component({
   selector: 'app-node-tree',
@@ -20,6 +22,20 @@ export class NodeTreeComponent {
   updateInProgress : boolean = false;
   updateCompleted : boolean = false;
   updateFailed : boolean = false;
+  readonly dialog = inject(MatDialog);
+
+  openDialog(nodeToDelete : Node): void {
+    const dialogRef = this.dialog.open(NodeDeletionComponent, {
+      data: nodeToDelete,
+    });
+
+    dialogRef.afterClosed().subscribe(result => {
+      console.log(`The dialog was closed, result is ${result}`);
+      if(result) {
+        this.initializeDatasource();
+      }
+    });
+  }
 
 
   constructor(private apiService: ApiService){
