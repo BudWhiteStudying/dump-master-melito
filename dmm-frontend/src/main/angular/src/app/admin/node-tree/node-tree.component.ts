@@ -101,6 +101,11 @@ export class NodeTreeComponent {
       kind : node.kind,
       _links : node._links
     };
+    this.getFullNode(node.id!).subscribe(
+      response => {
+        console.debug(`full node is ${JSON.stringify(response, null, 4)}`)
+      }
+    )
   }
 
   hasBeenModified(node : Node) : boolean {
@@ -149,7 +154,7 @@ export class NodeTreeComponent {
     );
   }
 
-  changeLanguage(event : any) {
-    this.translationService.setLanguage(event);
+  getFullNode(nodeId : number) : Observable<Node[] | Node | null> {
+    return this.apiService.getItemResource<Node>(`/nodes/${nodeId}`, 'node', true)
   }
 }
