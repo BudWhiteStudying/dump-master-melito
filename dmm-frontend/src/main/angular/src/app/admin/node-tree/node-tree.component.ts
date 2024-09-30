@@ -89,14 +89,12 @@ export class NodeTreeComponent {
     this.selectedNodeInitialState = {
       id : node.id,
       description : node.description,
-      text : node.text,
       kind : node.kind,
       _links : node._links
     };
     this.selectedNode = {
       id : node.id,
       description : node.description,
-      text : node.text,
       kind : node.kind,
       _links : node._links
     };
@@ -104,8 +102,7 @@ export class NodeTreeComponent {
 
   hasBeenModified(node : Node) : boolean {
     const isModified = node.description !== this.selectedNodeInitialState!.description
-    || node.kind !== this.selectedNodeInitialState!.kind
-    || node.text !== this.selectedNodeInitialState!.text;
+    || node.kind !== this.selectedNodeInitialState!.kind;
     return isModified;
   }
 

@@ -9,6 +9,8 @@ import lombok.*;
 import org.springframework.data.rest.core.annotation.RestResource;
 import org.springframework.lang.NonNull;
 
+import java.util.Set;
+
 @Entity
 @NoArgsConstructor
 @AllArgsConstructor
@@ -18,11 +20,12 @@ import org.springframework.lang.NonNull;
 @JsonInclude(value = JsonInclude.Include.NON_NULL)
 public class Line extends BaseEntity {
     @NonNull
-    private String text;
-
-    @NonNull
     @Enumerated(value = EnumType.STRING)
     private CharacterMood mood;
+
+    @OneToMany(mappedBy = "line", fetch = FetchType.LAZY, cascade = CascadeType.REMOVE)
+    @RestResource(path = "text", rel = "text")
+    private Set<LanguageAwareText> text;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "sound_effect_id", foreignKey = @ForeignKey(name = "FK_LINE__SOUND_EFFECT"))

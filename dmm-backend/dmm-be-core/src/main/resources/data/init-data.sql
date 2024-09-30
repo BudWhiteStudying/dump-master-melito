@@ -54,36 +54,32 @@ VALUES(
     (SELECT MAX(id) FROM NODE WHERE description = 'Root node, main storyline')
 );
 
-INSERT INTO NODE(description, kind, text, background_id, soundtrack_id, parent_id)
+INSERT INTO NODE(description, kind, background_id, soundtrack_id, parent_id)
 VALUES(
     'Melito chooses how to address the fact that he''s late - bold option',
     'CHOICE',
-    'Io NON sono in ritardo!',
     (SELECT MAX(id) FROM BACKGROUND_IMAGE WHERE description = 'School yard'),
     (SELECT MAX(id) FROM SOUND WHERE description = 'Everyday soundtrack'),
     (SELECT MAX(id) FROM NODE WHERE description = 'Melito is late')
 );
-INSERT INTO NODE(description, kind, text, background_id, soundtrack_id, parent_id)
+INSERT INTO NODE(description, kind, background_id, soundtrack_id, parent_id)
 VALUES(
     'Melito chooses how to address the fact that he''s late - meek option',
     'CHOICE',
-    'P-posso spiegare!',
     (SELECT MAX(id) FROM BACKGROUND_IMAGE WHERE description = 'School yard'),
     (SELECT MAX(id) FROM SOUND WHERE description = 'Everyday soundtrack'),
     (SELECT MAX(id) FROM NODE WHERE description = 'Melito is late')
 );
 
 
-INSERT INTO LINE(text, mood, character_id, dialog_id)
+INSERT INTO LINE(mood, character_id, dialog_id)
 VALUES(
-    'Sei in ritardo!',
     'REGULAR',
     (SELECT MAX(id) FROM GAME_CHARACTER WHERE name = 'Priscilla'),
     (SELECT MAX(id) FROM NODE WHERE description = 'Melito is late')
 );
-INSERT INTO LINE(text, mood, character_id, dialog_id)
+INSERT INTO LINE(mood, character_id, dialog_id)
 VALUES(
-    'S-sono in ritardo?!',
     'REGULAR',
     (SELECT MAX(id) FROM GAME_CHARACTER WHERE name = 'Melito'),
     (SELECT MAX(id) FROM NODE WHERE description = 'Melito is late')
@@ -94,4 +90,30 @@ VALUES(
     -1,
     'AFFINITY_PRISCILLA',
     (SELECT MAX(id) FROM NODE WHERE description = 'Melito chooses how to address the fact that he''s late - meek option')
+);
+
+INSERT INTO LANGUAGE_AWARE_TEXT(text, language_id, node_id)
+VALUES(
+    'Io NON sono in ritardo!',
+    'IT',
+    (SELECT MAX(id) FROM NODE WHERE description = 'Melito chooses how to address the fact that he''s late - bold option')
+);
+INSERT INTO LANGUAGE_AWARE_TEXT(text, language_id, node_id)
+VALUES(
+    'Uhh...',
+    'IT',
+    (SELECT MAX(id) FROM NODE WHERE description = 'Melito chooses how to address the fact that he''s late - meek option')
+);
+
+INSERT INTO LANGUAGE_AWARE_TEXT(text, language_id, line_id)
+VALUES(
+    'Sei in ritardo!',
+    'IT',
+    (SELECT MAX(id) FROM LINE WHERE dialog_id IN (SELECT MAX(id) FROM NODE WHERE description = 'Melito is late') AND character_id IN (SELECT MAX(id) FROM GAME_CHARACTER WHERE name = 'Priscilla'))
+);
+INSERT INTO LANGUAGE_AWARE_TEXT(text, language_id, line_id)
+VALUES(
+    'Ritar...do?',
+    'IT',
+    (SELECT MAX(id) FROM LINE WHERE dialog_id IN (SELECT MAX(id) FROM NODE WHERE description = 'Melito is late') AND character_id IN (SELECT MAX(id) FROM GAME_CHARACTER WHERE name = 'Melito'))
 );

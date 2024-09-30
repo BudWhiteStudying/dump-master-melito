@@ -20,7 +20,10 @@ public class Node extends BaseEntity {
     @NonNull
     @Enumerated(value = EnumType.STRING)
     private NodeType kind;
-    private String text;
+
+    @OneToMany(mappedBy = "node", fetch = FetchType.LAZY, cascade = CascadeType.REMOVE)
+    @RestResource(path = "text", rel = "text")
+    private Set<LanguageAwareText> text;
 
     @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.DETACH)
     @JoinColumn(name = "background_id", foreignKey = @ForeignKey(name = "FK_NODE__BKG_IMAGE"))
