@@ -24,7 +24,7 @@ public class Line extends BaseEntity {
     private CharacterMood mood;
 
     @OneToMany(mappedBy = "line", fetch = FetchType.LAZY, cascade = CascadeType.REMOVE)
-    @RestResource(path = "text", rel = "text")
+    @RestResource(path = "texts", rel = "texts")
     private Set<LanguageAwareText> text;
 
     @ManyToOne(fetch = FetchType.LAZY)

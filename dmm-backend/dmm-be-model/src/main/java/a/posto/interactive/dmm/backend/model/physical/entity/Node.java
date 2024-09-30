@@ -22,7 +22,7 @@ public class Node extends BaseEntity {
     private NodeType kind;
 
     @OneToMany(mappedBy = "node", fetch = FetchType.LAZY, cascade = CascadeType.REMOVE)
-    @RestResource(path = "text", rel = "text")
+    @RestResource(path = "texts", rel = "texts")
     private Set<LanguageAwareText> text;
 
     @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.DETACH)
