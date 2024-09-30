@@ -15,6 +15,7 @@ import {MatFormFieldModule} from '@angular/material/form-field';
 import {MatSidenavModule} from '@angular/material/sidenav';
 import {FormsModule} from '@angular/forms';
 import {MatDialogModule} from '@angular/material/dialog';
+import { MatSelectModule } from '@angular/material/select';
 
 
 @NgModule({
@@ -32,7 +33,8 @@ import {MatDialogModule} from '@angular/material/dialog';
     MatFormFieldModule,
     FormsModule,
     MatSidenavModule,
-    MatDialogModule
+    MatDialogModule,
+    MatSelectModule
   ],
   exports : [
     BrowserAnimationsModule,
@@ -46,7 +48,8 @@ import {MatDialogModule} from '@angular/material/dialog';
     MatFormFieldModule,
     FormsModule,
     MatSidenavModule,
-    MatDialogModule
+    MatDialogModule,
+    MatSelectModule
   ]
 })
 export class MaterialModule { }

@@ -5,6 +5,7 @@ import { from, map, Observable, of } from 'rxjs';
 import { MatDialog } from '@angular/material/dialog';
 import { NodeDeletionComponent } from '../node-deletion/node-deletion.component';
 import { NodeCreationComponent } from '../node-creation/node-creation.component';
+import { TranslationService } from '../../services/translation.service';
 
 @Component({
   selector: 'app-node-tree',
@@ -25,7 +26,9 @@ export class NodeTreeComponent {
   updateFailed : boolean = false;
   readonly dialog = inject(MatDialog);
 
-  constructor(private apiService: ApiService){
+  constructor(
+    public translationService : TranslationService,
+    private apiService: ApiService){
     this.initializeDatasource();
   }
 
@@ -142,5 +145,9 @@ export class NodeTreeComponent {
         this.dataSource = response
       }
     );
+  }
+
+  changeLanguage(event : any) {
+    this.translationService.setLanguage(event);
   }
 }

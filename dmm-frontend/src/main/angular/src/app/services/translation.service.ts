@@ -1,6 +1,6 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { firstValueFrom } from 'rxjs';
+import { BehaviorSubject, firstValueFrom } from 'rxjs';
 
 @Injectable({
   providedIn: 'root'
@@ -8,7 +8,8 @@ import { firstValueFrom } from 'rxjs';
 export class TranslationService {
 
   messages : any;
-  currentLanguage : 'IT' | 'EN' = 'IT'
+  currentLanguage = new BehaviorSubject<string>('IT');
+  languageChange$ = this.currentLanguage.asObservable();
 
   constructor(private http: HttpClient) {}
 
@@ -19,10 +20,14 @@ export class TranslationService {
   }
 
   getMessage(labelId : string) {
-    return this.messages[this.currentLanguage][labelId];
+    return this.messages[this.currentLanguage.value][labelId];
   }
 
-  setLanguage(languageId : 'IT' | 'EN') {
-    this.currentLanguage = languageId;
+  getAvailableLanguages() {
+    return Object.keys(this.messages);
+  }
+
+  setLanguage(languageId : string) {
+    this.currentLanguage.next(languageId);
   }
 }
