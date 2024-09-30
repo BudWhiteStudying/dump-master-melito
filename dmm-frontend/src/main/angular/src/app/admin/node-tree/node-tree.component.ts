@@ -6,6 +6,7 @@ import { MatDialog } from '@angular/material/dialog';
 import { NodeDeletionComponent } from '../node-deletion/node-deletion.component';
 import { NodeCreationComponent } from '../node-creation/node-creation.component';
 import { TranslationService } from '../../services/translation.service';
+import { SettingsService } from '../../services/settings.service';
 
 @Component({
   selector: 'app-node-tree',
@@ -28,7 +29,9 @@ export class NodeTreeComponent {
 
   constructor(
     public translationService : TranslationService,
-    private apiService: ApiService){
+    public settingsService : SettingsService,
+    private apiService: ApiService
+  ){
     this.initializeDatasource();
   }
 

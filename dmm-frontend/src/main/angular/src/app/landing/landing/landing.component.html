@@ -3,21 +3,30 @@
     <div id='landing-title-text' class='landing-title-text'>DUMP MASTER MELITO</div>
   </section>
   <section id='landing-options' class='landing-options'>
-    <a mat-fab disabled extended class='landing-option-button'>
-      <mat-icon>favorite</mat-icon>
-      {{'CONTINUE_CAPS' | translate}}
-    </a>
-    <a mat-fab extended class='landing-option-button'>
-      <mat-icon>favorite</mat-icon>
-      {{'LOAD_GAME_CAPS' | translate}}
-    </a>
-    <a mat-fab extended class='landing-option-button'>
-      <mat-icon>favorite</mat-icon>
-      {{'NEW_GAME_CAPS' | translate}}
-    </a>
-    <a mat-fab extended class='landing-option-button' routerLink='/admin'>
-      <mat-icon>favorite</mat-icon>
-      {{'ADMIN_CAPS' | translate}}
-    </a>
+    <div id='landing-options-buttons' class='landing-options-buttons'>
+      <a mat-fab disabled extended class='landing-option-button'>
+        <mat-icon>favorite</mat-icon>
+        {{'CONTINUE_CAPS' | translate}}
+      </a>
+      <a mat-fab extended class='landing-option-button'>
+        <mat-icon>favorite</mat-icon>
+        {{'LOAD_GAME_CAPS' | translate}}
+      </a>
+      <a mat-fab extended class='landing-option-button'>
+        <mat-icon>favorite</mat-icon>
+        {{'NEW_GAME_CAPS' | translate}}
+      </a>
+      <a mat-fab extended class='landing-option-button' routerLink='/admin'>
+        <mat-icon>favorite</mat-icon>
+        {{'ADMIN_CAPS' | translate}}
+      </a>
+    </div>
+    <div id='landing-options-settings'>
+      <button mat-icon-button [attr.aria-label]="'Open settings'" (click)='settingsService.openSettingsDialog()'>
+        <mat-icon class="mat-icon-rtl-mirror">
+          tune
+        </mat-icon>
+      </button>
+    </div>
   </section>  
 </div>

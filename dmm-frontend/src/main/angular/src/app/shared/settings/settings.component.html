@@ -1,0 +1,14 @@
+<p mat-dialog-title>{{'SETTINGS' | translate}}</p>
+<mat-dialog-content>
+    <mat-form-field>
+        <mat-label>{{'LANGUAGE' | translate}}</mat-label>
+        <mat-select value="{{translationService.currentLanguage.value}}" (valueChange)="changeLanguage($event)">
+          @for (language of translationService.getAvailableLanguages(); track language) {
+            <mat-option value="{{language}}">{{language}}</mat-option>
+          }
+        </mat-select>
+      </mat-form-field>
+</mat-dialog-content>
+<mat-dialog-actions>
+  <button mat-fab extended cdkFocusInitial mat-dialog-close='true'>{{'CONFIRM' | translate}}</button>
+</mat-dialog-actions>

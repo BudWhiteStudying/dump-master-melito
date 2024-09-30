@@ -5,12 +5,14 @@ import { LandingComponent } from './landing/landing.component';
 import { MaterialModule } from '../material/material.module';
 import { AppRoutingModule } from '../app-routing.module';
 import { SharedModule } from '../shared/shared.module';
+import { SettingsComponent } from '../shared/settings/settings.component';
 
 
 
 @NgModule({
   declarations: [
-    LandingComponent
+    LandingComponent,
+    SettingsComponent
   ],
   imports: [
     CommonModule,

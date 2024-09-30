@@ -1,14 +1,11 @@
 <mat-toolbar>
     <span>Dump-Master Melito - {{'ADMIN_CONSOLE_TITLE' | translate}}</span>
     <span class="toolbar-spacer"></span>
-    <mat-form-field>
-      <mat-label>{{'LANGUAGE' | translate}}</mat-label>
-      <mat-select value="{{translationService.currentLanguage.value}}" (valueChange)="changeLanguage($event)">
-        @for (language of translationService.getAvailableLanguages(); track language) {
-          <mat-option value="{{language}}">{{language}}</mat-option>
-        }
-      </mat-select>
-    </mat-form-field>
+    <button mat-icon-button [attr.aria-label]="'Open settings'" (click)='settingsService.openSettingsDialog()'>
+      <mat-icon class="mat-icon-rtl-mirror">
+        tune
+      </mat-icon>
+    </button>
 </mat-toolbar>
 <section id='node-tree-content' class='main-content'>
     <mat-sidenav-container>

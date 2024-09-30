@@ -9,6 +9,7 @@ import { AdminModule } from './admin/admin.module';
 import { ConfigService } from './services/config.service';
 import { SharedModule } from './shared/shared.module';
 import { TranslationService } from './services/translation.service';
+import { MAT_DIALOG_DEFAULT_OPTIONS, MatDialogConfig } from '@angular/material/dialog';
 
 export function initializeApp(
   configService: ConfigService,
@@ -38,8 +39,9 @@ export function initializeApp(
       useFactory: initializeApp,
       deps: [ConfigService, TranslationService],
       multi: true
-    }
+    },
+    {provide: MAT_DIALOG_DEFAULT_OPTIONS, useValue: {minHeight: '20vw', minWidth: '35vw'}}
   ],
   bootstrap: [AppComponent]
 })
-export class AppModule { }
+export class AppModule {}

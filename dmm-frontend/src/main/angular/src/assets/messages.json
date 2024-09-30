@@ -12,6 +12,7 @@
         "NODE" : "Nodo",
         "NODE_CREATION" : "Crea un nuovo Nodo",
         "NODE_DELETION_CONFIRMATION" : "Elimina Nodo",
+        "SETTINGS" : "Impostazioni",
         "TYPE" : "Tipo",
         "TEXT" : "Testo",
         "UPDATE" : "Aggiorna"
@@ -29,6 +30,7 @@
         "NODE" : "Node",
         "NODE_CREATION" : "Create new Node",
         "NODE_DELETION_CONFIRMATION" : "Delete Node",
+        "SETTINGS" : "Settings",
         "TYPE" : "Type",
         "TEXT" : "Text",
         "UPDATE" : "Update"

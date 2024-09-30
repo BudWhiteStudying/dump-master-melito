@@ -1,7 +1,8 @@
+<p mat-dialog-title>{{'NODE_DELETION_CONFIRMATION' | translate}} {{nodeToDelete.id}}</p>
 <mat-dialog-content>
-    <p>{{'NODE_DELETION_CONFIRMATION' | translate}} {{nodeToDelete.id}}</p>
-  </mat-dialog-content>
-  <mat-dialog-actions>
-    <button mat-button [mat-dialog-close]="false">{{'CANCEL' | translate}}</button>
-    <button mat-fab extended [mat-dialog-close]="true" (click)="confirm()" cdkFocusInitial>{{'CONFIRM' | translate}}</button>
-  </mat-dialog-actions>
+  {{nodeToDelete.description}}
+</mat-dialog-content>
+<mat-dialog-actions>
+  <button mat-button [mat-dialog-close]="false">{{'CANCEL' | translate}}</button>
+  <button mat-fab extended [mat-dialog-close]="true" (click)="confirm()" cdkFocusInitial>{{'CONFIRM' | translate}}</button>
+</mat-dialog-actions>
