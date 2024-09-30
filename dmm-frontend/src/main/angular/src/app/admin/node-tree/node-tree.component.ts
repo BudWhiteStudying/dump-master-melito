@@ -32,7 +32,8 @@ export class NodeTreeComponent {
     this.initializeDatasource();
   }
 
-  openDeletionDialog(nodeToDelete : Node): void {
+  openDeletionDialog(nodeToDelete : Node, event? : MouseEvent): void {
+    event?.stopPropagation();
     const dialogRef = this.dialog.open(NodeDeletionComponent, {
       data: nodeToDelete,
     });
@@ -45,7 +46,8 @@ export class NodeTreeComponent {
     });
   }
 
-  openCreationDialog(parentNode : Node): void {
+  openCreationDialog(parentNode : Node, event? : MouseEvent): void {
+    event?.stopPropagation();
     const dialogRef = this.dialog.open(NodeCreationComponent, {
       data: parentNode.id,
     });
