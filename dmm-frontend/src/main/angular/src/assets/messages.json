@@ -1,10 +1,32 @@
 {
     "IT" : {
+        "ADMIN_CAPS" : "ADMIN",
+        "ADMIN_CONSOLE_TITLE" : "Console Amministrativa",
         "CONFIRM" : "Conferma",
-        "CANCEL" : "Annulla"
+        "CONTINUE_CAPS" : "CONTINUA",
+        "CANCEL" : "Annulla",
+        "DESCRIPTION" : "Descrizione",
+        "LOAD_GAME_CAPS" : "CARICA PARTITA",
+        "NEW_GAME_CAPS" : "NUOVA PARTITA",
+        "NODE_CREATION" : "Crea un nuovo Nodo",
+        "NODE_DELETION_CONFIRMATION" : "Elimina Nodo",
+        "TYPE" : "Tipo",
+        "TEXT" : "Testo",
+        "UPDATE" : "Aggiorna"
     },
     "EN" : {
+        "ADMIN_CAPS" : "ADMIN",
+        "ADMIN_CONSOLE_TITLE" : "Admin console",
         "CONFIRM" : "Confirm",
-        "CANCEL" : "Cancel"
+        "CONTINUE_CAPS" : "CONTINUE",
+        "CANCEL" : "Cancel",
+        "DESCRIPTION" : "Description",
+        "LOAD_GAME_CAPS" : "LOAD GAME",
+        "NEW_GAME_CAPS" : "NEW GAME",
+        "NODE_CREATION" : "Create new Node",
+        "NODE_DELETION_CONFIRMATION" : "Delete Node",
+        "TYPE" : "Type",
+        "TEXT" : "Text",
+        "UPDATE" : "Update"
     }
 }

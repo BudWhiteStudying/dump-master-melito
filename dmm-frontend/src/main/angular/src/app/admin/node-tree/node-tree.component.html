@@ -1,5 +1,5 @@
 <mat-toolbar>
-    <span>Dump-Master Melito - Admin console</span>
+    <span>Dump-Master Melito - {{'ADMIN_CONSOLE_TITLE' | translate}}</span>
 </mat-toolbar>
 <section id='node-tree-content' class='main-content'>
     <mat-sidenav-container>
@@ -49,19 +49,19 @@
                     <!-- TODO: build a component for the node card -->
                     <label class='node-card-title'>Nodo {{selectedNode.id}}</label>
                     <mat-form-field id='node-description-textarea' class="node-property-textarea">
-                        <mat-label>Descrizione</mat-label>
+                        <mat-label>{{'DESCRIPTION' | translate}}</mat-label>
                         <textarea matInput placeholder="" [(ngModel)]="selectedNode!.description"></textarea>
                     </mat-form-field>
                     <mat-form-field id='node-kind-textarea' class="node-property-textarea">
-                        <mat-label>Tipo</mat-label>
+                        <mat-label>{{'TYPE' | translate}}</mat-label>
                         <textarea matInput placeholder="" [(ngModel)]="selectedNode!.kind"></textarea>
                     </mat-form-field>
                     <mat-form-field id='node-text-textarea' class="node-property-textarea">
-                        <mat-label>Testo</mat-label>
+                        <mat-label>{{'TEXT' | translate}}</mat-label>
                         <textarea matInput placeholder="" [(ngModel)]="selectedNode!.text"></textarea>
                     </mat-form-field>
                     <button mat-fab extended (click)='updateNode(selectedNode!)' [disabled]='!hasBeenModified(selectedNode)'>
-                      AGGIORNA
+                      {{'UPDATE' | translate}}
                       <mat-icon *ngIf='updateInProgress'>sync</mat-icon>
                       <mat-icon *ngIf='updateCompleted'>check_circle</mat-icon>
                       <mat-icon *ngIf='updateFailed'>error</mat-icon>

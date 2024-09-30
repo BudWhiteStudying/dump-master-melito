@@ -4,6 +4,7 @@ import { LandingComponent } from './landing/landing.component';
 
 import { MaterialModule } from '../material/material.module';
 import { AppRoutingModule } from '../app-routing.module';
+import { SharedModule } from '../shared/shared.module';
 
 
 
@@ -14,7 +15,8 @@ import { AppRoutingModule } from '../app-routing.module';
   imports: [
     CommonModule,
     MaterialModule,
-    AppRoutingModule
+    AppRoutingModule,
+    SharedModule
   ]
 })
 export class LandingModule { }

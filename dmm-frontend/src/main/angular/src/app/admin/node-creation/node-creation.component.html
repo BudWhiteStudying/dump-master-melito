@@ -1,15 +1,15 @@
 <mat-dialog-content>
-    <p>Create new node</p>
+    <p>{{'NODE_CREATION' | translate}}</p>
     <mat-form-field id='node-description-textarea' class="node-property-textarea">
-        <mat-label>Descrizione</mat-label>
+        <mat-label>{{'DESCRIPTION' | translate}}</mat-label>
         <textarea matInput placeholder="" [(ngModel)]="nodeToCreate.description"></textarea>
     </mat-form-field>
     <mat-form-field id='node-kind-textarea' class="node-property-textarea">
-        <mat-label>Tipo</mat-label>
+        <mat-label>{{'TYPE' | translate}}</mat-label>
         <textarea matInput placeholder="" [(ngModel)]="nodeToCreate.kind"></textarea>
     </mat-form-field>
     <mat-form-field id='node-text-textarea' class="node-property-textarea">
-        <mat-label>Testo</mat-label>
+        <mat-label>{{'TEXT' | translate}}</mat-label>
         <textarea matInput placeholder="" [(ngModel)]="nodeToCreate.text"></textarea>
     </mat-form-field>
 
