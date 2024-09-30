@@ -1,4 +1,5 @@
-import { Component } from '@angular/core';
+import { Component, EventEmitter, Input, Output } from '@angular/core';
+import { Node } from '../../model/Node';
 
 @Component({
   selector: 'app-node-details',
@@ -7,4 +8,6 @@ import { Component } from '@angular/core';
 })
 export class NodeDetailsComponent {
 
+  @Input() node! : Node;
+  @Output() nodeChange : EventEmitter<Node> = new EventEmitter();
 }
