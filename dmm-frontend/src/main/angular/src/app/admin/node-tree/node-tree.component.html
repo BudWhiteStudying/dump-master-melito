@@ -46,8 +46,7 @@
                 </mat-nested-tree-node>
               </mat-tree>
         </mat-sidenav-content>
-        <mat-sidenav opened mode="side" position="end" #sidenav [(opened)]="opened" (opened)="events.push('open!')"
-            (closed)="events.push('close!')" class='node-tree-sidenav'>
+        <mat-sidenav opened mode="side" position="end" #sidenav [(opened)]="opened" class='node-tree-sidenav'>
             <div style='margin: 1vw;'>
                 <mat-card-content *ngIf="selectedNode">
                   <button mat-icon-button [attr.aria-label]="'Close sidebar'" (click)='sidenav.close()'>

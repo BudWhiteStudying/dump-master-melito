@@ -1,5 +1,4 @@
 import { Component, inject } from '@angular/core';
-import { ApiService } from '../../services/api.service';
 import { Node } from '../../model/Node';
 import { from, map, Observable, of } from 'rxjs';
 import { MatDialog } from '@angular/material/dialog';
@@ -7,6 +6,7 @@ import { NodeDeletionComponent } from '../node-deletion/node-deletion.component'
 import { NodeCreationComponent } from '../node-creation/node-creation.component';
 import { TranslationService } from '../../services/translation.service';
 import { SettingsService } from '../../services/settings.service';
+import { NodesService } from '../../services/nodes.service';
 
 @Component({
   selector: 'app-node-tree',
@@ -17,7 +17,6 @@ export class NodeTreeComponent {
 
   selectedNodeInitialState? : Node = undefined;
   selectedNode? : Node = undefined;
-  events: string[] = [];
   opened: boolean = false;
   dataSource : Node[] = [];
   hasChildCache: Map<number, Observable<boolean>> = new Map();
@@ -30,7 +29,7 @@ export class NodeTreeComponent {
   constructor(
     public translationService : TranslationService,
     public settingsService : SettingsService,
-    private apiService: ApiService
+    private nodesService : NodesService
   ){
     this.initializeDatasource();
   }
@@ -64,7 +63,7 @@ export class NodeTreeComponent {
     });
   }
   
-  childrenAccessor = (node: Node) => from(this.getNodes(node.id!)) ?? [];
+  childrenAccessor = (node: Node) => from(this.nodesService.getNodes(node.id!)) ?? [];
 
   hasChild = (node: Node) => {
     if(!node || node.id===undefined || node.id===null) {
@@ -75,7 +74,7 @@ export class NodeTreeComponent {
       return this.hasChildCache.get(node.id)!;
     }
         // If not cached, compute and cache it
-        const observable = this.countChildren(node.id).pipe(
+        const observable = this.nodesService.countNodeChildren(node.id).pipe(
           map(count => {
             console.log(`hasChild invoked with node id ${node.id}, returning ${count > 0}`);
             return count > 0;
@@ -101,7 +100,8 @@ export class NodeTreeComponent {
       kind : node.kind,
       _links : node._links
     };
-    this.getFullNode(node.id!).subscribe(
+    
+    this.nodesService.getFullNode(node.id!).subscribe(
       response => {
         console.debug(`full node is ${JSON.stringify(response, null, 4)}`)
       }
@@ -117,7 +117,7 @@ export class NodeTreeComponent {
   updateNode(node : Node) {
     console.debug(`updating node ${node.id}`);
     this.updateInProgress = true;
-    this.apiService.updateResource(`/nodes/${node.id}`, node).subscribe(
+    this.nodesService.updateNode(node).subscribe(
       response => {
         this.updateInProgress = false;
         this.updateCompleted = true;
@@ -132,29 +132,12 @@ export class NodeTreeComponent {
     );
   }
 
-  getNodes(nodeId? : number) : Observable<Node[]> {
-    if(nodeId || nodeId===0) {
-      return this.apiService.getCollectionResource<Node>(`/nodes/search/findByParentId?parentId=${nodeId}`, 'nodes');
-    }
-    else {
-      return this.apiService.getCollectionResource<Node>('/nodes/search/findByParentIsNull', 'nodes');
-    }
-  }
-
-  countChildren(nodeId : number) : Observable<number> {
-    return this.apiService.getNumber(`/nodes/search/countByParentId?parentId=${nodeId}`);
-  }
-
   initializeDatasource() {
-    this.getNodes().subscribe(
+    this.nodesService.getNodes().subscribe(
       response => {
         console.debug(`fetched initial data:\n${JSON.stringify(response, null, 4)}`)
         this.dataSource = response
       }
     );
-  }
-
-  getFullNode(nodeId : number) : Observable<Node[] | Node | null> {
-    return this.apiService.getItemResource<Node>(`/nodes/${nodeId}`, 'node', true)
   }
 }
