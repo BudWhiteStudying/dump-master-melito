@@ -4,27 +4,26 @@ api:
       origins: '*'
       methods: GET,PUT,POST,DELETE
 
-application:
-  label: Dump Master Melito
-
 logging:
   level:
+    org:
+      hibernate:
+        cache:
+          ehcache:
+            internal: trace
+          internal: trace
+          spi: trace
+        orm:
+          jdbc:
+            bind: trace
+        SQL: debug
     net:
       ttddyy:
         dsproxy:
           listener: info # set to 'debug' for some kick-ass SQL logs
     root: INFO
 
-server:
-  servlet:
-    context-path: /dump-master-melito
-
 spring:
-  datasource:
-    url: jdbc:h2:mem:testdb
-    driverClassName: org.h2.Driver
-    username: sa
-    password: sa
   h2:
     console:
       enabled: true
@@ -33,14 +32,16 @@ spring:
     serialization:
       FAIL_ON_EMPTY_BEANS: false
   jpa:
-    database-platform: org.hibernate.dialect.H2Dialect
     defer-datasource-initialization: true
     hibernate:
       naming:
         physical-strategy: a.posto.interactive.dmm.backend.core.config.SnakeCasePhysicalNamingStrategy
+#    properties:
+#      hibernate:
+#        cache:
+#          infinispan:
+#            cfg: org/infinispan/hibernate/cache/commons/builder/infinispan-configs-local.xml
+#          use_second_level_cache: true
+#          region:
+#            factory_class: org.infinispan.hibernate.cache.v60.InfinispanRegionFactory
     show-sql: false
-  profiles:
-    active: production # either development or production
-  sql:
-    init:
-      data-locations: classpath:data/init-data.sql

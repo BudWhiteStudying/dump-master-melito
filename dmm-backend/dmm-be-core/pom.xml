@@ -12,7 +12,7 @@
     <artifactId>dmm-be-core</artifactId>
 
     <properties>
-        <javafx.version>22</javafx.version>
+        <infinispan.version>14.0.32.Final</infinispan.version>
     </properties>
 
     <dependencies>
@@ -46,6 +46,61 @@
             <version>2.2.224</version>
         </dependency>
 
+<!--        <dependency>-->
+<!--            <groupId>org.infinispan</groupId>-->
+<!--            <artifactId>infinispan-hibernate-cache-v60</artifactId>-->
+<!--            <version>${infinispan.version}</version>-->
+<!--            <exclusions>-->
+<!--                <exclusion>-->
+<!--                    <groupId>org.infinispan</groupId>-->
+<!--                    <artifactId>infinispan-core</artifactId>-->
+<!--                </exclusion>-->
+<!--                <exclusion>-->
+<!--                    <groupId>org.infinispan</groupId>-->
+<!--                    <artifactId>infinispan-hibernate-cache-commons</artifactId>-->
+<!--                </exclusion>-->
+<!--                <exclusion>-->
+<!--                    <groupId>org.infinispan</groupId>-->
+<!--                    <artifactId>infinispan-hibernate-cache-spi</artifactId>-->
+<!--                </exclusion>-->
+<!--                <exclusion>-->
+<!--                    <groupId>org.infinispan</groupId>-->
+<!--                    <artifactId>infinispan-jboss-marshalling</artifactId>-->
+<!--                </exclusion>-->
+<!--                <exclusion>-->
+<!--                    <groupId>org.infinispan</groupId>-->
+<!--                    <artifactId>infinispan-commons</artifactId>-->
+<!--                </exclusion>-->
+<!--            </exclusions>-->
+<!--        </dependency>-->
+<!--        <dependency>-->
+<!--            <groupId>org.infinispan</groupId>-->
+<!--            <artifactId>infinispan-core</artifactId>-->
+<!--            <version>${infinispan.version}</version>-->
+<!--        </dependency>-->
+<!--        <dependency>-->
+<!--            <groupId>org.infinispan</groupId>-->
+<!--            <artifactId>infinispan-hibernate-cache-commons</artifactId>-->
+<!--            <version>${infinispan.version}</version>-->
+<!--        </dependency>-->
+<!--        <dependency>-->
+<!--            <groupId>org.infinispan</groupId>-->
+<!--            <artifactId>infinispan-hibernate-cache-spi</artifactId>-->
+<!--            <version>${infinispan.version}</version>-->
+<!--        </dependency>-->
+<!--        <dependency>-->
+<!--            <groupId>org.infinispan</groupId>-->
+<!--            <artifactId>infinispan-jboss-marshalling</artifactId>-->
+<!--            <version>${infinispan.version}</version>-->
+<!--        </dependency>-->
+<!--        <dependency>-->
+<!--            <groupId>org.infinispan</groupId>-->
+<!--            <artifactId>infinispan-commons</artifactId>-->
+<!--            <version>${infinispan.version}</version>-->
+<!--        </dependency>-->
+
+
+        <!-- WHAT WAS THIS FOR? -->
         <dependency>
             <groupId>com.github.gavlyukovskiy</groupId>
             <artifactId>datasource-proxy-spring-boot-starter</artifactId>
@@ -59,33 +114,33 @@
                 <groupId>org.springframework.boot</groupId>
                 <artifactId>spring-boot-maven-plugin</artifactId>
             </plugin>
-            <plugin>
-                <artifactId>maven-resources-plugin</artifactId>
-                <version>3.2.0</version>
-                <configuration>
-                    <delimiters>
-                        <delimiter>@</delimiter>
-                    </delimiters>
-                    <useDefaultDelimiters>false</useDefaultDelimiters>
-                </configuration>
-                <executions>
-                    <execution>
-                        <id>copy-client-resources</id>
-                        <phase>validate</phase>
-                        <goals>
-                            <goal>copy-resources</goal>
-                        </goals>
-                        <configuration>
-                            <outputDirectory>src/main/resources/META-INF/resources</outputDirectory>
-                            <resources>
-                                <resource>
-                                    <directory>../../dmm-frontend/src/main/angular/dist/dmm-frontend/browser</directory>
-                                </resource>
-                            </resources>
-                        </configuration>
-                    </execution>
-                </executions>
-            </plugin>
+<!--            <plugin>-->
+<!--                <artifactId>maven-resources-plugin</artifactId>-->
+<!--                <version>3.2.0</version>-->
+<!--                <configuration>-->
+<!--                    <delimiters>-->
+<!--                        <delimiter>@</delimiter>-->
+<!--                    </delimiters>-->
+<!--                    <useDefaultDelimiters>false</useDefaultDelimiters>-->
+<!--                </configuration>-->
+<!--                <executions>-->
+<!--                    <execution>-->
+<!--                        <id>copy-client-resources</id>-->
+<!--                        <phase>validate</phase>-->
+<!--                        <goals>-->
+<!--                            <goal>copy-resources</goal>-->
+<!--                        </goals>-->
+<!--                        <configuration>-->
+<!--                            <outputDirectory>src/main/resources/META-INF/resources</outputDirectory>-->
+<!--                            <resources>-->
+<!--                                <resource>-->
+<!--                                    <directory>../../dmm-frontend/src/main/angular/dist/dmm-frontend/browser</directory>-->
+<!--                                </resource>-->
+<!--                            </resources>-->
+<!--                        </configuration>-->
+<!--                    </execution>-->
+<!--                </executions>-->
+<!--            </plugin>-->
         </plugins>
     </build>
 </project>
