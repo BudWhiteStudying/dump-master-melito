@@ -6,10 +6,17 @@ api:
 
 logging:
   level:
+    org:
+      hibernate:
+        cache:
+          ehcache:
+            internal: trace
+          internal: trace
+          spi: trace
     net:
       ttddyy:
         dsproxy:
-          listener: info # set to 'debug' for some kick-ass SQL logs
+          listener: debug # set to 'debug' for some kick-ass SQL logs
     root: INFO
 
 spring:
@@ -25,4 +32,14 @@ spring:
     hibernate:
       naming:
         physical-strategy: a.posto.interactive.dmm.backend.core.config.SnakeCasePhysicalNamingStrategy
+    properties:
+      hibernate:
+        cache:
+          use_second_level_cache: true
+          use_query_cache: true
+          region:
+            factory_class: jcache
+      javax:
+        cache:
+          provider: org.ehcache.jsr107.EhcacheCachingProvider
     show-sql: false

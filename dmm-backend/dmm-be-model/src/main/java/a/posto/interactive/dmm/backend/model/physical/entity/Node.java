@@ -3,6 +3,7 @@ package a.posto.interactive.dmm.backend.model.physical.entity;
 import a.posto.interactive.dmm.backend.model.enumeration.NodeType;
 import jakarta.persistence.*;
 import lombok.*;
+import org.hibernate.annotations.CacheConcurrencyStrategy;
 import org.springframework.data.rest.core.annotation.RestResource;
 import org.springframework.lang.NonNull;
 
@@ -14,6 +15,8 @@ import java.util.Set;
 @NoArgsConstructor
 @AllArgsConstructor
 @Entity
+@Cacheable
+@org.hibernate.annotations.Cache(usage = CacheConcurrencyStrategy.READ_WRITE)
 public class Node extends BaseEntity {
     @NonNull
     private String description;
