@@ -6,17 +6,6 @@ api:
 
 logging:
   level:
-    org:
-      hibernate:
-        cache:
-          ehcache:
-            internal: trace
-          internal: trace
-          spi: trace
-        orm:
-          jdbc:
-            bind: trace
-        SQL: debug
     net:
       ttddyy:
         dsproxy:
@@ -36,12 +25,4 @@ spring:
     hibernate:
       naming:
         physical-strategy: a.posto.interactive.dmm.backend.core.config.SnakeCasePhysicalNamingStrategy
-#    properties:
-#      hibernate:
-#        cache:
-#          infinispan:
-#            cfg: org/infinispan/hibernate/cache/commons/builder/infinispan-configs-local.xml
-#          use_second_level_cache: true
-#          region:
-#            factory_class: org.infinispan.hibernate.cache.v60.InfinispanRegionFactory
     show-sql: false
