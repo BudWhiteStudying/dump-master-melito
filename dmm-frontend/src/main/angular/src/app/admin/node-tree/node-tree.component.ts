@@ -101,11 +101,11 @@ export class NodeTreeComponent {
       _links : node._links
     };
     
-    this.nodesService.getFullNode(node.id!).subscribe(
-      response => {
-        console.debug(`full node is ${JSON.stringify(response, null, 4)}`)
-      }
-    )
+    // this.nodesService.getFullNode(node.id!).subscribe(
+    //   response => {
+    //     console.debug(`full node is ${JSON.stringify(response, null, 4)}`)
+    //   }
+    // )
   }
 
   hasBeenModified(node : Node) : boolean {
