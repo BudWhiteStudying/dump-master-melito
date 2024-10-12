@@ -28,7 +28,7 @@ export class NodesService {
     return this.apiService.getNumber(`/nodes/search/countByParentId?parentId=${nodeId}`);
   }
 
-  getFullNode(nodeId : number) : Observable<Node[] | Node | null> {
-    return this.apiService.getItemResource<Node>(`/nodes/${nodeId}`, 'node', true)
+  getFullNode(nodeId : number) : Observable<Node> {
+    return (this.apiService.getItemResource<Node>(`/nodes/${nodeId}`, 'node', true) as Observable<Node>)
   }
 }

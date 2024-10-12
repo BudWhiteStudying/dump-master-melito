@@ -88,22 +88,12 @@ export class NodeTreeComponent {
 
   setSelectedNode(node : Node, event? : MouseEvent) {
     event?.stopPropagation();
-    this.selectedNodeInitialState = {
-      id : node.id,
-      description : node.description,
-      kind : node.kind,
-      _links : node._links
-    };
-    this.selectedNode = {
-      id : node.id,
-      description : node.description,
-      kind : node.kind,
-      _links : node._links
-    };
     
     this.nodesService.getFullNode(node.id!).subscribe(
       response => {
-        console.debug(`full node is ${JSON.stringify(response, null, 4)}`)
+        console.debug(`full node is ${JSON.stringify(response, null, 4)}`);
+        this.selectedNodeInitialState = {...response};
+        this.selectedNode = {...response};
       }
     )
   }
