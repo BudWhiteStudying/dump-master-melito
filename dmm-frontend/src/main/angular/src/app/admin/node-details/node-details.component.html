@@ -10,8 +10,35 @@
         <mat-option value="{{nodeType}}">{{nodeType}}</mat-option>
       }
     </mat-select>
-  </mat-form-field>
-<!-- <mat-form-field id='node-text-textarea' class="node-property-textarea">
+</mat-form-field>
+<mat-form-field id='node-text-textarea' class="node-property-textarea" *ngIf="node['texts'] && node['texts'][0]">
     <mat-label>{{'TEXT' | translate}}</mat-label>
-    <textarea matInput placeholder="" [(ngModel)]="nodeToCreate.text"></textarea>
-</mat-form-field> -->
+    <!-- TODO: this is not ok obv, need to target a text based on the current language -->
+    <textarea matInput placeholder="" [(ngModel)]="node['texts'][0].text"></textarea>
+</mat-form-field>
+<mat-form-field id='node-soundtrack-textarea' class="node-property-textarea" *ngIf="node['soundtrack']">
+    <mat-label>{{'SOUNDTRACK' | translate}}</mat-label>
+    <textarea matInput disabled="true" placeholder="" [(ngModel)]="node['soundtrack']['description']"></textarea>
+</mat-form-field>
+<mat-form-field id='node-bg-image-textarea' class="node-property-textarea" *ngIf="node['background-image']">
+    <mat-label>{{'BACKGROUND_IMAGE' | translate}}</mat-label>
+    <textarea matInput disabled="true" placeholder="" [(ngModel)]="node['background-image']['description']"></textarea>
+</mat-form-field>
+<div id='node-lines-container' *ngIf="node['lines'] && node['lines'].length>0" class="node-property-textarea">
+  <div>{{'LINES' | translate}}</div>
+  @for (line of node['lines']; track $index) {
+    <mat-form-field id='node-lines-{{$index}}' class="node-property-textarea">
+      <mat-label>{{line['character']['name']}}</mat-label>
+      <textarea matInput disabled="true" placeholder="">{{line['texts'][0].text}}</textarea>
+    </mat-form-field>
+  }
+</div>
+<div id='node-outcomes-container' *ngIf="node['outcomes'] && node['outcomes'].length>0" class="node-property-textarea">
+  <div>{{'OUTCOMES' | translate}}</div>
+  @for (outcome of node['outcomes']; track $index) {
+    <mat-form-field id='node-lines-{{$index}}' class="node-property-textarea">
+      <mat-label>{{outcome['counterKind']}}</mat-label>
+      <textarea matInput disabled="true" placeholder="">{{outcome['modifier']}}</textarea>
+    </mat-form-field>
+  }
+</div>
